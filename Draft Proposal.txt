@@ -1,0 +1,46 @@
+Domain - Meets Standard
+Business Understanding - The proposal specifies a clear research question or business problem.
+Data Understanding - The proposal specifies potential data sources and includes a plan for obtaining data.
+Data Preparation - The proposal includes a conceptual explanation of the proposed data pipeline to transform raw data into an analytics base table (ABT) for modeling.
+Modeling - The proposal specifies one or more specific statistical or machine learning techniques as candidates for evaluation.
+Evaluation - The proposal includes a plan for evaluating model performance.
+Deployment - The proposal specifies a minimal viable product (MVP) for presentation and deployment.
+Danger Area - Question to Consider
+Causal Inference - If causal inference is proposed, is the dataset experimental or observational?
+Labeled Data - If a supervised learning model is proposed, what will be used as the label?
+Prior Art - Have other researchers already spent decades attempting to solve this specific problem?
+Scope - Can you complete the specified minimal viable product within 1 week?
+
+
+-------------------------------------------------------------------------------
+
+Predicting the Next Play in the NFL
+
+Motivation:
+From the perspective of an NFL Defensive Coordinator, having an instant data-driven prediction of what play the opposing offense will run is extremely valuable.  Knowing what play is coming can influence which defensive personnel to have on the field and in which coverage.  
+
+Data:
+We can gather every play from scrimmage over the last few seasons from two main sources below.  The first requires scraping, the second is already in CSV format, but requires preparation.
+http://www.pro-football-reference.com/play-index/play_finder.cgi
+http://nflsavant.com/about.php
+
+Modeling:
+Given features like the time on the game clock, the score, the down, and yards to go, we will try to predict the result of the play such as run, short pass, long pass, punt, or field goal.  Several models will be evaluated including a Gradient Boosting Classifier as well as a Decision Tree specific to an offense (potentially to each offense).  Alternatively, a Naive Bayes classifier may show promise.
+
+Evaluation:
+We can evaluate the performance of the models in two ways. 1) Split off a validation set of randomly selected plays throughout the data set.  Cross-validation and tuning will be performed on the training set and the generalization measured on the validation set.  2) Use previous seasons data as the training set and evaluate on plays run in the current season.  Ultimately, we want to know how it will perform "live" during games.
+
+Deployment:
+The minimum viable product for this project includes a user interface that accepts the offense, the down, yards to go, etc., backed by a model that maps those inputs to projected plays (run, short pass, long pass, punt, field goal).
+
+Danger Area:
+While there are hundreds of thousands of plays executed during each NFL season, the amount of data per offense and situation is limited, so the data's density is low.  In addition, the players and play callers for offenses change year over year and even week to week, making historical data less pertinent to predicting upcoming plays.  
+
+Labeled Data:
+Labels are included in the play descriptions, since we know the outcomes.
+
+Prior Art:
+Most of the prior art in this domain is dedicated to predicting the outcomes of games.
+
+Scope:
+Given that the data and tools are readily available, the MVP is accomplishable within a week.
