@@ -117,6 +117,6 @@ if __name__ == '__main__':
     # the 2013 data has some stray escaped quotes (\") that confuse pandas
     remove_inner_quotes('data/pbp-2013.csv', 'data/pbp-2013-fixed.csv')
 
-    clean('data/pbp-2015.csv').to_csv('data/pbp2015-clean.csv')
-    clean('data/pbp-2014.csv').to_csv('data/pbp2014-clean.csv')
-    clean('data/pbp-2013-fixed.csv').to_csv('data/pbp2013-clean.csv')
+    clean('data/pbp-2015.csv').to_csv('data/pbp2015-clean.csv', index=False)
+    clean('data/pbp-2014.csv').to_csv('data/pbp2014-clean.csv', index=False)
+    clean('data/pbp-2013-fixed.csv').to_csv('data/pbp2013-clean.csv', index=False)
