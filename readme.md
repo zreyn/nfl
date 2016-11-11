@@ -19,15 +19,15 @@ http://armchairanalysis.com/data.php
 Since the play data is not specific to this purpose, it includes many columns and rows that are extraneous.  Scripts to clean and transform the data are included in the src directory.
 
 Ultimately, I produced a data set includes the following features:
-* Quarter        int64
-* Minute         int64
-* Second         int64
-* OffenseTeam    category
-* Down           int64
-* ToGo           int64
-* YardLine       int64
-* Formation      category
-* Play           category
+* Quarter
+* Minute
+* Second
+* OffenseTeam
+* Down
+* ToGo
+* YardLine
+* Formation
+* Play
 
 The 'Play' column is the target value consisting of 3 labels: {RUN, PASS, KICK}
 

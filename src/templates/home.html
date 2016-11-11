@@ -22,7 +22,30 @@
 <body>
 <div class="container">
 
-    <h2>Predict the Play</h2>
+    <h2>Predict the Play!</h2>
+
+    <div class="container" id="situation">
+      <div>Offense: {{ data.record.OffenseTeam }}</div>
+      <div>Q{{ data.record.Quarter }} {{ data.record.Minute }}:{{ data.record.Second }}</div>
+      <div>Down: {{ data.record.Down }} and {{ data.record.ToGo }}</div>
+      <div>Spot: {{ data.record.YardLineDirection }} {{ data.record.YardLineFixed}}</div>
+      <div>Formation: {{ data.record.Formation }}</div>
+    </div>
+
+    <div class="container" id="prediction">
+      <div class="playtype">PASS: {{ '{:04.2f}'.format(data.probas[1]) }}</div>
+      <div class="playtype">RUSH: {{ '{:04.2f}'.format(data.probas[2]) }}</div>
+      <div class="playtype">KICK: {{ '{:04.2f}'.format(data.probas[0]) }}</div>
+      <div class="playtype_pred">
+        <div>{{ data.record.Description }}</div>
+        {% if data.play_pred == data.record.Play %}
+          <div>Defended!</div>
+        {% else %}
+          <div>They scored :(</div>
+        {% endif %}
+      </div>
+    </div>
+
 
 </div>
 </body>
