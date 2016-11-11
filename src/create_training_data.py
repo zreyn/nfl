@@ -33,6 +33,77 @@ def prep(df):
 
     return df_prepped
 
+def prep_record(record):
+    '''
+    INPUT: One play record as a single row DataFrame in "clean form"
+    OUTPUT: The record in "model form"
+
+    This will work for multiple records, although it's really meant for one.
+    '''
+
+    formations = [
+    'FIELD_GOAL',
+    'NO_HUDDLE',
+    'NO_HUDDLE_SHOTGUN',
+    'PUNT',
+    'SHOTGUN',
+    'UNDER_CENTER',
+    'WILDCAT']
+
+    teams = [
+    'ARI',
+    'ATL',
+    'BAL',
+    'BUF',
+    'CAR',
+    'CHI',
+    'CIN',
+    'CLE',
+    'DAL',
+    'DEN',
+    'DET',
+    'GB',
+    'HOU',
+    'IND',
+    'JAX',
+    'KC',
+    'LA',
+    'MIA',
+    'MIN',
+    'NE',
+    'NO',
+    'NYG',
+    'NYJ',
+    'OAK',
+    'PHI',
+    'PIT',
+    'SD',
+    'SEA',
+    'SF',
+    'TB',
+    'TEN',
+    'WAS']
+
+    # Dummy the team
+    df2 = pd.get_dummies(record.OffenseTeam)
+    dummies_frame = pd.get_dummies(teams)
+    df2 = df2.reindex(columns=dummies_frame.columns, fill_value=0)
+    df2.columns = map(lambda x: 'TEAM_' + str(x), df2.columns)
+
+    # Dummy the formation
+    df1 = pd.get_dummies(record.Formation)
+    dummies_frame = pd.get_dummies(formations)
+    df1 = df1.reindex(columns=dummies_frame.columns, fill_value=0)
+    df1.columns = map(lambda x: 'FORMATION_' + x.replace (' ', '_'), df1.columns)
+
+    # Combine the dummy variables and drop the categorical versions
+    record = pd.concat(
+        [record.ix[:,['Quarter', 'Minute', 'Second', 'Down', 'ToGo', 'YardLine', 'Play']],
+        df2,
+        df1], axis=1)
+
+    return record
+
 if __name__ == '__main__':
 
     # read in the cleaned data and combine it
