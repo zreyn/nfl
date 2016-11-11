@@ -26,23 +26,70 @@
 
     <div class="container" id="situation">
       <div>Offense: {{ data.record.OffenseTeam }}</div>
-      <div>Q{{ data.record.Quarter }} {{ data.record.Minute }}:{{ data.record.Second }}</div>
+      <div>Q{{ data.record.Quarter }} {{ '{:02}'.format(data.record.Minute) }}:{{ '{:02}'.format(data.record.Second) }}</div>
       <div>Down: {{ data.record.Down }} and {{ data.record.ToGo }}</div>
       <div>Spot: {{ data.record.YardLineDirection }} {{ data.record.YardLineFixed}}</div>
       <div>Formation: {{ data.record.Formation }}</div>
     </div>
 
-    <div class="container" id="prediction">
+    <div class="container" id="userinput">
+
+      <select name="defense">
+        <option value="PASS">PASS</option>
+        <option value="RUSH">RUSH</option>
+        <option value="KICK">KICK</option>
+      </select>
+
+      <input type="button" id="defendButton" name="defend" value="Defend" />
+
+      <script>
+        $('#defendButton').click(function() {
+
+          // show the model's prediction
+          $('#prediction').toggle('slow', function() {
+            // Animation complete.
+          });
+
+          // grab the user's guess
+          var $userguess = $('#defense').val();
+
+          if($userguess == "{{ data.record.Play }}") {
+            // show the outcome of the play
+            $('#right').toggle('slow', function() {
+              // Animation complete.
+            });
+          }
+          else {
+            // show the outcome of the play
+            $('#wrong').toggle('slow', function() {
+              // Animation complete.
+            });
+          }
+
+          // show the outcome of the play
+          $('#outcome').toggle('slow', function() {
+            // Animation complete.
+          });
+
+        });
+      </script>
+
+    </div>
+
+    <div id="prediction" class="container" style="display:none;">
       <div class="playtype">PASS: {{ '{:04.2f}'.format(data.probas[1]) }}</div>
       <div class="playtype">RUSH: {{ '{:04.2f}'.format(data.probas[2]) }}</div>
       <div class="playtype">KICK: {{ '{:04.2f}'.format(data.probas[0]) }}</div>
+      <div class="predictedplay">The model picks: {{ data.play_pred }}</div>
+    </div>
+
+    <div id="outcome" class="container" style="display:none;">
       <div class="playtype_pred">
         <div>{{ data.record.Description }}</div>
-        {% if data.play_pred == data.record.Play %}
-          <div>Defended!</div>
-        {% else %}
-          <div>They scored :(</div>
-        {% endif %}
+
+        <div id="right" style="display:none;">Good defense!</div>
+        <div id="wrong" style="display:none;">You blew it!</div>
+
       </div>
     </div>
 
