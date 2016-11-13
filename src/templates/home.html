@@ -34,7 +34,7 @@
 
     <div class="container" id="userinput">
 
-      <select name="defense">
+      <select id="defenseBox">
         <option value="PASS">PASS</option>
         <option value="RUSH">RUSH</option>
         <option value="KICK">KICK</option>
@@ -51,7 +51,7 @@
           });
 
           // grab the user's guess
-          var $userguess = $('#defense').val();
+          var $userguess = $('#defenseBox').val();
 
           if($userguess == "{{ data.record.Play }}") {
             // show the outcome of the play
