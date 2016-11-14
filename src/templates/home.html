@@ -14,8 +14,10 @@
             src="{{ url_for('static', filename='app.js') }}">
     </script>
 
+<!--
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/bootstrap.css') }}">
+-->
 
 </head>
 
@@ -41,55 +43,27 @@
       </select>
 
       <input type="button" id="defendButton" name="defend" value="Defend" />
-
       <script>
-        $('#defendButton').click(function() {
-
-          // show the model's prediction
-          $('#prediction').toggle('slow', function() {
-            // Animation complete.
-          });
-
-          // grab the user's guess
-          var $userguess = $('#defenseBox').val();
-
-          if($userguess == "{{ data.record.Play }}") {
-            // show the outcome of the play
-            $('#right').toggle('slow', function() {
-              // Animation complete.
-            });
-          }
-          else {
-            // show the outcome of the play
-            $('#wrong').toggle('slow', function() {
-              // Animation complete.
-            });
-          }
-
-          // show the outcome of the play
-          $('#outcome').toggle('slow', function() {
-            // Animation complete.
-          });
-
+        $(document).ready(function(){
+          $('#defendButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}"}, evaluate);
         });
       </script>
 
     </div>
 
     <div id="prediction" class="container" style="display:none;">
+      <div class="predictedplay">The model picks: {{ data.play_pred }}</div>
       <div class="playtype">PASS: {{ '{:04.2f}'.format(data.probas[1]) }}</div>
       <div class="playtype">RUSH: {{ '{:04.2f}'.format(data.probas[2]) }}</div>
       <div class="playtype">KICK: {{ '{:04.2f}'.format(data.probas[0]) }}</div>
-      <div class="predictedplay">The model picks: {{ data.play_pred }}</div>
     </div>
 
     <div id="outcome" class="container" style="display:none;">
       <div class="playtype_pred">
         <div>{{ data.record.Description }}</div>
-
         <div id="right" style="display:none;">Good defense!</div>
         <div id="wrong" style="display:none;">You blew it!</div>
-
+        <div><a id="newPlayLink" href="/">Get Another Play</a></div>
       </div>
     </div>
 

@@ -38,6 +38,9 @@ app = Flask(__name__)
 with open('data/model.pkl', 'r') as f:
     model = pickle.load(f)
 
+# set the model version
+model_version = 'gdbc_v1'
+
 # read in the cleaned data and combine it
 filenames = ['data/pbp2015-clean.csv', 'data/pbp2014-clean.csv', 'data/pbp2013-clean.csv']
 pbp = combine(filenames)
@@ -72,7 +75,7 @@ def predict(record):
 Flask methods
 ==================================
 '''
-# dashboard/home page
+# home page
 @app.route('/')
 def home_page():
 
@@ -88,7 +91,32 @@ def home_page():
     # pass the records to the template and render it
     return render_template('home.html', data=data)
 
+# Log the user guesses.  Test with:
+# curl -H "Content-Type: application/json" -X POST -d '@example.json' http://localhost:8080/guess
+@app.route('/guess', methods=['POST'])
+def guess():
 
+    # pull the request and grab a timestamp and generate an id
+    request_data = request.json
+    timestamp = datetime.datetime.utcnow()
+    record_id = str(int(round(time.time() * 1000)))
+
+    print 'Got a POST:'
+    print request_data
+
+    # # insert the score into the DB
+    # record = {'_id':record_id, 'timestamp':timestamp, 'model_version':model_version, 'score':score, 'request':request_data}
+    # try:
+    #     requests_table.insert(record)
+    # except DuplicateKeyError:
+    #     print 'Duplicate!'
+    #
+    # # update our risk counts
+    # update_risk_counts(score)
+    #
+
+    # respond with the score
+    return jsonify({'model_version':model_version})
 
 '''
 ========================================================
