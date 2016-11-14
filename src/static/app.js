@@ -46,6 +46,12 @@ function evaluate(event){
   });
 
   // let the server know the outcome
-  $.post( "/guess", {"usercorrect": $usercorrect, "modelcorrect": $modelcorrect } );
+  $.ajax({
+           type: "POST",
+           url: "/guess",
+           contentType: "application/json",
+           dataType: "json",
+           data: JSON.stringify({"actual_play": event.data.play, "user_guess": $userguess, "model_guess": event.data.play_pred})
+       });
 
 }
