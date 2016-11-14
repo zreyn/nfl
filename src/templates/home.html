@@ -46,6 +46,7 @@
       <script>
         $(document).ready(function(){
           $('#defendButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}"}, evaluate);
+          display_accuracy();
         });
       </script>
 
@@ -67,6 +68,8 @@
       </div>
     </div>
 
+
+    <div class="container" id="accuracy"></div>
 
 </div>
 </body>

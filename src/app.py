@@ -16,6 +16,7 @@ IMPORTS
 '''
 import cPickle as pickle
 import pandas as pd
+import numpy as np
 from flask import Flask, render_template, request, jsonify
 from build_model import DummyModel
 from create_training_data import combine, prep_record
@@ -47,9 +48,8 @@ user_cm_file = 'data/user_cm.csv'
 model_cm_file = 'data/model_cm.csv'
 cm_index_dict = {'PASS':0, 'RUSH':1, 'KICK':2}
 
-# read in the cleaned data and combine it
+# filenames where the data is located
 filenames = ['data/pbp2015-clean.csv', 'data/pbp2014-clean.csv', 'data/pbp2013-clean.csv']
-pbp = combine(filenames)
 
 '''
 ==================================
@@ -85,16 +85,19 @@ def create_confusion_matrices():
     #return model_confusion_matrix, user_confusion_matrix
     return user_cm, model_cm
 
-def update_confusion_matrices(one_round):
 
-    # look up the right indices in the confusion matrices (y=true, x=pred)
-    y = cm_index_dict[one_round['actual_play']]
-    user_x = cm_index_dict[one_round['user_guess']]
-    model_x = cm_index_dict[one_round['model_guess']]
+def compute_accuracy(cm):
 
-    # update the proper cells
-    user_cm[y][user_x] += 1
-    model_cm[y][model_x] += 1
+    # given a confusion matrix (y=true, x=pred), calculate accuracy
+    num_right = 0
+    for i in xrange(len(cm)):
+        num_right += cm[i][i]
+
+    # if none were right (or we have no data), return 0; otherwise return accuracy
+    if num_right == 0:
+        return 0
+    else:
+        return num_right / cm.sum()
 
 '''
 ==================================
@@ -117,36 +120,41 @@ def home_page():
     # pass the records to the template and render it
     return render_template('home.html', data=data)
 
+# get just the confusion matrices
+@app.route('/get_accuracy')
+def get_accuracy():
+
+    # prep the data for the template
+    data = {}
+    data['model_version'] = model_version
+    data['user_cm'] = user_cm.astype(int).tolist()
+    data['model_cm'] = model_cm.astype(int).tolist()
+    data['user_accuracy'] = compute_accuracy(user_cm)*100
+    data['model_accuracy'] = compute_accuracy(model_cm)*100
+
+    # pass the confusion matrices to the template and render it
+    return render_template('accuracy.html', data=data)
+
+
 # Log the user guesses.  Test with:
 # curl -H "Content-Type: application/json" -X POST -d '@example.json' http://localhost:8080/guess
 @app.route('/guess', methods=['POST'])
 def guess():
 
-    # pull the request and grab a timestamp and generate an id
+    # pull the request data
     request_data = request.json
-    timestamp = datetime.datetime.utcnow()
-    record_id = str(int(round(time.time() * 1000)))
 
-    # insert the score into the DB
-    record = {
-        '_id':record_id,
-        'model_version':model_version,
-        'actual_play':request_data['actual_play'],
-        'model_guess':request_data['model_guess'],
-        'user_guess':request_data['user_guess']
-    }
+    # look up the right indices in the confusion matrices (y=true, x=pred)
+    y = cm_index_dict[request_data['actual_play']]
+    user_x = cm_index_dict[request_data['user_guess']]
+    model_x = cm_index_dict[request_data['model_guess']]
 
-    try:
-        guesses_table.insert(record)
-    except DuplicateKeyError:
-        print 'Duplicate!'
+    # update the proper cells
+    user_cm[y][user_x] += 1
+    model_cm[y][model_x] += 1
 
-    # update our risk counts
-    update_confusion_matrices(request_data)
-
-    # respond with the score
-    # XXX need to return the two confusion matrices as JSON
-    return jsonify({'model_version':model_version, })
+    # respond with the updated aggregate stats (the two confusion matrices as json)
+    return jsonify({'model_version':model_version})
 
 '''
 ========================================================
@@ -154,5 +162,12 @@ If this is kicked from the command-line, run the server
 ========================================================
 '''
 if __name__ == '__main__':
-    model_confusion_matrix, user_confusion_matrix = create_confusion_matrices()
+
+    # read in the cleaned data
+    pbp = combine(filenames)
+
+    # read in the confusion matrix data
+    user_cm, model_cm = create_confusion_matrices()
+
+    # run the app
     app.run(host='0.0.0.0', port=8080, debug=False)

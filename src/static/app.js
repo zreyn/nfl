@@ -3,6 +3,11 @@
 This file holds all the javascript needed for the page
 ============================================================================
 */
+
+function display_accuracy(){
+  $('#accuracy').load('/get_accuracy');
+}
+
 function evaluate(event){
 
   // keep track of whether the user and/or model was correct
@@ -51,7 +56,7 @@ function evaluate(event){
            url: "/guess",
            contentType: "application/json",
            dataType: "json",
-           data: JSON.stringify({"actual_play": event.data.play, "user_guess": $userguess, "model_guess": event.data.play_pred})
+           data: JSON.stringify({"actual_play": event.data.play, "user_guess": $userguess, "model_guess": event.data.play_pred}),
+           success: display_accuracy()
        });
-
 }
