@@ -10,19 +10,67 @@ def remove_inner_quotes(infile, outfile):
 def clean(filename):
     pbp = pd.read_csv(filename)
 
-    # drop all columns with no info
-    pbp.drop(['Unnamed: 10', 'Unnamed: 12','Unnamed: 16', 'Unnamed: 17', \
-                  'Challenger', 'IsMeasurement', 'NextScore', 'TeamWin'], \
-                  axis=1, inplace=True)
+    # convert column names to upper case (since they are inconsistent in the data by season)
+    pbp.columns = [x.upper() for x in pbp.columns]
 
-    # drop all columns we won't use
-    pbp.drop(['IsIncomplete', 'IsTouchdown','IsSack', 'IsChallenge', \
-                  'IsChallengeReversed', 'IsInterception', 'IsPenalty', \
-                  'IsTwoPointConversion', 'SeriesFirstDown', \
-                  'IsTwoPointConversionSuccessful', 'IsPenaltyAccepted', \
-                  'PenaltyTeam', 'IsFumble', 'PenaltyType', 'PenaltyYards', \
-                  'SeasonYear', 'GameId', 'GameDate', 'IsNoPlay'], \
-                  axis=1, inplace=True)
+    # drop all columns with no info, we won't use, or aren't in all the data
+    pbp.drop(
+        ['UNNAMED: 10', \
+         'UNNAMED: 12', \
+         'UNNAMED: 16',\
+         'UNNAMED: 17', \
+         'CHALLENGER', \
+         'ISMEASUREMENT', \
+         'NEXTSCORE', \
+         'TEAMWIN',\
+         'ISINCOMPLETE', \
+         'ISTOUCHDOWN', \
+         'ISSACK', \
+         'ISCHALLENGE', \
+         'ISCHALLENGEREVERSED', \
+         'ISINTERCEPTION', \
+         'ISPENALTY', \
+         'ISTWOPOINTCONVERSION', \
+         'SERIESFIRSTDOWN', \
+         'ISTWOPOINTCONVERSIONSUCCESSFUL', \
+         'ISPENALTYACCEPTED', \
+         'PENALTYTEAM', \
+         'ISFUMBLE', \
+         'PENALTYTYPE', \
+         'PENALTYYARDS', \
+         'SEASONYEAR', \
+         'GAMEID', \
+         'GAMEDATE', \
+         'ISNOPLAY', \
+         'DEFENSESCORE',
+         'ISMESUREMENT',
+         'ISPRESEASON',
+         'OFFENSESCORE',
+         'PENALIZEDPLAYER',
+         'PLAYID',
+         'SCORECHANGE',
+         'SCOREDIFF'], \
+          axis=1, inplace=True,  errors='ignore')
+
+    # rename the columns to be more friendly
+    pbp.columns = ['Quarter', \
+                    'Minute', \
+                    'Second', \
+                    'OffenseTeam', \
+                    'DefenseTeam', \
+                    'Down', \
+                    'ToGo', \
+                    'YardLine', \
+                    'Description', \
+                    'Yards', \
+                    'Formation', \
+                    'PlayType', \
+                    'IsRush', \
+                    'IsPass', \
+                    'PassType', \
+                    'RushDirection', \
+                    'YardLineFixed', \
+                    'YardLineDirection']
 
     # get rid of all the kicks except punts and field goals
     pbp = pbp[(pbp.PlayType != 'KICK OFF') & (pbp.PlayType != 'EXTRA POINT') & \
@@ -117,6 +165,7 @@ if __name__ == '__main__':
     # the 2013 data has some stray escaped quotes (\") that confuse pandas
     remove_inner_quotes('data/pbp-2013.csv', 'data/pbp-2013-fixed.csv')
 
+    clean('data/pbp-2016.csv').to_csv('data/pbp2016-clean.csv', index=False)
     clean('data/pbp-2015.csv').to_csv('data/pbp2015-clean.csv', index=False)
     clean('data/pbp-2014.csv').to_csv('data/pbp2014-clean.csv', index=False)
     clean('data/pbp-2013-fixed.csv').to_csv('data/pbp2013-clean.csv', index=False)

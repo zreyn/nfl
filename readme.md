@@ -10,11 +10,8 @@ From the perspective of an NFL Defensive Coordinator, having an instant data-dri
 
 ### Data
 
-I gathered NFL play data over the course of the 2013-2015 seasons from NFL Savant:
+I gathered NFL play data over the course of the 2013-2016 seasons from NFL Savant:
 http://nflsavant.com/about.php
-
-2016 data is from:
-http://armchairanalysis.com/data.php
 
 Since the play data is not specific to this purpose, it includes many columns and rows that are extraneous.  Scripts to clean and transform the data are included in the src directory.
 
@@ -31,7 +28,7 @@ Ultimately, I produced a data set includes the following features:
 
 The 'Play' column is the target value consisting of 3 labels: {RUN, PASS, KICK}
 
-The data contains a total of 115,124 offensive plays.
+The data contains a total of 134,998 offensive plays run from 2013 - Wk 10 2016.
 
 ### Modeling
 
@@ -49,7 +46,4 @@ We can evaluate the performance of the models in two ways. 1) Split off a valida
 
 ### Deployment
 
-The minimum viable product for this project includes a user interface that accepts the offense, the down, yards to go, etc., backed by a model that maps those inputs to projected plays (run, short pass, long pass, punt, field goal).
-
-
-This would be super-fun… after the model is trained, take this season’s inputs as a validation set.  Present the user with a situation as if they are a defense (score, clock, team, yard line); they will choose what to defend (short/long pass, run, kick, etc.) and the model will also predict.  The ground truth will also be displayed and both predictions evaluated.  Compete against the model!
+The user interface presents the user with a situation as if they are a defense (clock, team, yard line, formation); they will choose what to defend (short/long pass, run, kick, etc.).  The model will also make a prediction, but that is shown to the user after they have made their own prediction. The ground truth will be displayed and both predictions evaluated.  Compete against the model!

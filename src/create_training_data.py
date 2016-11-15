@@ -107,7 +107,7 @@ def prep_record(record):
 if __name__ == '__main__':
 
     # read in the cleaned data and combine it
-    filenames = ['data/pbp2015-clean.csv', 'data/pbp2014-clean.csv', 'data/pbp2013-clean.csv']
+    filenames = ['data/pbp2016-clean.csv', 'data/pbp2015-clean.csv', 'data/pbp2014-clean.csv', 'data/pbp2013-clean.csv']
     pbp = combine(filenames)
 
     # prep the data for modeling and then save it to file

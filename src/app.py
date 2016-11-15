@@ -19,7 +19,7 @@ import pandas as pd
 import numpy as np
 from flask import Flask, render_template, request, jsonify
 from build_model import DummyModel
-from create_training_data import combine, prep_record
+from create_training_data import prep_record
 import socket
 import requests
 import time
@@ -48,8 +48,8 @@ user_cm_file = 'data/user_cm.csv'
 model_cm_file = 'data/model_cm.csv'
 cm_index_dict = {'PASS':0, 'RUSH':1, 'KICK':2}
 
-# filenames where the data is located
-filenames = ['data/pbp2015-clean.csv', 'data/pbp2014-clean.csv', 'data/pbp2013-clean.csv']
+# filename where the data is located
+data_filename = 'data/pbp-validation.csv'
 
 '''
 ==================================
@@ -196,7 +196,7 @@ If this is kicked from the command-line, run the server
 if __name__ == '__main__':
 
     # read in the cleaned data
-    pbp = combine(filenames)
+    pbp = pd.read_csv(data_filename)
 
     # read in the confusion matrix data
     user_cm, model_cm = create_confusion_matrices()
