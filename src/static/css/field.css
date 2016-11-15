@@ -1,0 +1,405 @@
+#EndZone {
+    float: left;
+    width: 300px;
+    height: 500px;
+    background-color: red;
+}
+
+.TopHash div {
+    width: 30px;
+    height: 30px;
+    border-right: 1px solid white;
+    position: absolute;
+}
+
+#OneYardLineTopHash {
+    left: 300px;
+}
+
+#TwoYardLineTopHash {
+    left: 330px;
+}
+
+#ThreeYardLineTopHash {
+    left: 360px;
+}
+
+#FourYardLineTopHash {
+    left: 390px;
+}
+
+#SixYardLineTopHash {
+    left: 450px;
+}
+
+#SevenYardLineTopHash {
+    left: 480px;
+}
+
+#EightYardLineTopHash {
+    left: 510px;
+}
+
+#NineYardLineTopHash {
+    left: 540px;
+}
+
+#ElevenYardLineTopHash {
+    left: 600px;
+}
+
+#TwelveYardLineTopHash {
+    left: 630px;
+}
+
+#ThirteenYardLineTopHash {
+    left: 660px;
+}
+
+#FourteenYardLineTopHash {
+    left: 690px;
+}
+
+#SixteenYardLineTopHash {
+    left: 750px;
+}
+
+#SeventeenYardLineTopHash {
+    left: 780px;
+}
+
+#EighteenYardLineTopHash {
+    left: 810px;
+}
+
+#NineteenYardLineTopHash {
+    left: 840px;
+}
+
+#TwentyOneYardLineTopHash {
+    left: 900px;
+}
+
+#TwentyTwoYardLineTopHash {
+    left: 930px;
+}
+
+#TwentyThreeYardLineTopHash {
+    left: 960px;
+}
+
+.MiddleTopHash div {
+    top: 170px;
+    width: 30px;
+    height: 30px;
+    border-right: 1px solid white;
+    position: absolute;
+}
+
+#OneYardLineMiddleTopHash {
+    left: 300px;
+}
+
+#TwoYardLineMiddleTopHash {
+    left: 330px;
+}
+
+#ThreeYardLineMiddleTopHash {
+    left: 360px;
+}
+
+#FourYardLineMiddleTopHash {
+    left: 390px;
+}
+
+#SixYardLineMiddleTopHash {
+    left: 450px;
+}
+
+#SevenYardLineMiddleTopHash {
+    left: 480px;
+}
+
+#EightYardLineMiddleTopHash {
+    left: 510px;
+}
+
+#NineYardLineMiddleTopHash {
+    left: 540px;
+}
+
+#ElevenYardLineMiddleTopHash {
+    left: 600px;
+}
+
+#TwelveYardLineMiddleTopHash {
+    left: 630px;
+}
+
+#ThirteenYardLineMiddleTopHash {
+    left: 660px;
+}
+
+#FourteenYardLineMiddleTopHash {
+    left: 690px;
+}
+
+#SixteenYardLineMiddleTopHash {
+    left: 750px;
+}
+
+#SeventeenYardLineMiddleTopHash {
+    left: 780px;
+}
+
+#EighteenYardLineMiddleTopHash {
+    left: 810px;
+}
+
+#NineteenYardLineMiddleTopHash {
+    left: 840px;
+}
+
+#TwentyOneYardLineMiddleTopHash {
+    left: 900px;
+}
+
+#TwentyTwoYardLineMiddleTopHash {
+    left: 930px;
+}
+
+#TwentyThreeYardLineMiddleTopHash {
+    left: 960px;
+}
+
+.MiddleBottomHash div {
+    top: 270px;
+    width: 30px;
+    height: 30px;
+    border-right: 1px solid white;
+    position: absolute;
+}
+
+#OneYardLineMiddleBottomHash {
+    left: 300px;
+}
+
+#TwoYardLineMiddleBottomHash {
+    left: 330px;
+}
+
+#ThreeYardLineMiddleBottomHash {
+    left: 360px;
+}
+
+#FourYardLineMiddleBottomHash {
+    left: 390px;
+}
+
+#SixYardLineMiddleBottomHash {
+    left: 450px;
+}
+
+#SevenYardLineMiddleBottomHash {
+    left: 480px;
+}
+
+#EightYardLineMiddleBottomHash {
+    left: 510px;
+}
+
+#NineYardLineMiddleBottomHash {
+    left: 540px;
+}
+
+#ElevenYardLineMiddleBottomHash {
+    left: 600px;
+}
+
+#TwelveYardLineMiddleBottomHash {
+    left: 630px;
+}
+
+#ThirteenYardLineMiddleBottomHash {
+    left: 660px;
+}
+
+#FourteenYardLineMiddleBottomHash {
+    left: 690px;
+}
+
+#SixteenYardLineMiddleBottomHash {
+    left: 750px;
+}
+
+#SeventeenYardLineMiddleBottomHash {
+    left: 780px;
+}
+
+#EighteenYardLineMiddleBottomHash {
+    left: 810px;
+}
+
+#NineteenYardLineMiddleBottomHash {
+    left: 840px;
+}
+
+#TwentyOneYardLineMiddleBottomHash {
+    left: 900px;
+}
+
+#TwentyTwoYardLineMiddleBottomHash {
+    left: 930px;
+}
+
+#TwentyThreeYardLineMiddleBottomHash {
+    left: 960px;
+}
+
+.BottomHash div {
+    top: 470px;
+    width: 30px;
+    height: 30px;
+    border-right: 1px solid white;
+    position: absolute;
+}
+
+#OneYardLineBottomHash {
+    left: 300px;
+}
+
+#TwoYardLineBottomHash {
+    left: 330px;
+}
+
+#ThreeYardLineBottomHash {
+    left: 360px;
+}
+
+#FourYardLineBottomHash {
+    left: 390px;
+}
+
+#SixYardLineBottomHash {
+    left: 450px;
+}
+
+#SevenYardLineBottomHash {
+    left: 480px;
+}
+
+#EightYardLineBottomHash {
+    left: 510px;
+}
+
+#NineYardLineBottomHash {
+    left: 540px;
+}
+
+#ElevenYardLineBottomHash {
+    left: 600px;
+}
+
+#TwelveYardLineBottomHash {
+    left: 630px;
+}
+
+#ThirteenYardLineBottomHash {
+    left: 660px;
+}
+
+#FourteenYardLineBottomHash {
+    left: 690px;
+}
+
+#SixteenYardLineBottomHash {
+    left: 750px;
+}
+
+#SeventeenYardLineBottomHash {
+    left: 780px;
+}
+
+#EighteenYardLineBottomHash {
+    left: 810px;
+}
+
+#NineteenYardLineBottomHash {
+    left: 840px;
+}
+
+#TwentyOneYardLineBottomHash {
+    left: 900px;
+}
+
+#TwentyTwoYardLineBottomHash {
+    left: 930px;
+}
+
+#TwentyThreeYardLineBottomHash {
+    left: 960px;
+}
+
+#FiveYardLine {
+    left: 420px;
+    width: 30px;
+    height: 500px;
+    border-right: 1px solid white;
+    position: absolute;
+}
+
+#TenYardLineTopMark {
+    left: 575px;
+    top: 100px;
+    color: white;
+    position: absolute;
+    font-size: 24px;
+}
+
+#TenYardLine {
+    left: 570px;
+    width: 30px;
+    height: 500px;
+    border-right: 1px solid white;
+    position: absolute;
+}
+
+#TenYardLineBottomMark {
+    left: 575px;
+    top: 400px;
+    color: white;
+    position: absolute;
+    font-size: 24px;
+}
+
+#FifteenYardLine {
+    left: 720px;
+    width: 30px;
+    height: 500px;
+    border-right: 1px solid white;
+    position: absolute;
+}
+
+#TwentyYardLineTopMark {
+    left: 875px;
+    top: 100px;
+    color: white;
+    position: absolute;
+    font-size: 24px;
+}
+
+#TwentyYardLine {
+    left: 870px;
+    width: 30px;
+    height: 500px;
+    border-right: 1px solid white;
+    position: absolute;
+}
+
+#TwentyYardLineBottomMark {
+    left: 875px;
+    top: 400px;
+    color: white;
+    position: absolute;
+    font-size: 24px;
+}

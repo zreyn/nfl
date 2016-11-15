@@ -1,0 +1,170 @@
+<!-- http://stackoverflow.com/questions/32301089/creating-a-football-field-in-html-css -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Predict the Play</title>
+  <meta name="description" content="Predict the Play">
+  <meta name="author" content="Zane Reynolds">
+
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='jquery.js') }}">
+    </script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='app.js') }}">
+    </script>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Custom feel CSS -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/field.css') }}">
+
+</head>
+
+<body>
+
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">Predict the Play</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="/project">Project</a></li>
+          <li><a href="/author">Author</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+
+<!-- Spacer -->
+<div class="page-header"><p></p></div>
+
+
+  <!-- Main container -->
+<div class="container theme-showcase" role="main">
+
+
+  <div class="FootballField" id="field">
+    <div id="EndZone"></div>
+    <div class="TopHash">
+    <div id="OneYardLineTopHash"></div>
+    <div id="TwoYardLineTopHash"></div>
+    <div id="ThreeYardLineTopHash"></div>
+    <div id="FourYardLineTopHash"></div>
+    <div id="SixYardLineTopHash"></div>
+    <div id="SevenYardLineTopHash"></div>
+    <div id="EightYardLineTopHash"></div>
+    <div id="NineYardLineTopHash"></div>
+    <div id="ElevenYardLineTopHash"></div>
+    <div id="TwelveYardLineTopHash"></div>
+    <div id="ThirteenYardLineTopHash"></div>
+    <div id="FourteenYardLineTopHash"></div>
+    <div id="SixteenYardLineTopHash"></div>
+    <div id="SeventeenYardLineTopHash"></div>
+    <div id="EighteenYardLineTopHash"></div>
+    <div id="NineteenYardLineTopHash"></div>
+    <div id="TwentyOneYardLineTopHash"></div>
+    <div id="TwentyTwoYardLineTopHash"></div>
+    <div id="TwentyThreeYardLineTopHash"></div>
+    </div>
+    <div class="MiddleTopHash">
+    <div id="OneYardLineMiddleTopHash"></div>
+    <div id="TwoYardLineMiddleTopHash"></div>
+    <div id="ThreeYardLineMiddleTopHash"></div>
+    <div id="FourYardLineMiddleTopHash"></div>
+    <div id="SixYardLineMiddleTopHash"></div>
+    <div id="SevenYardLineMiddleTopHash"></div>
+    <div id="EightYardLineMiddleTopHash"></div>
+    <div id="NineYardLineMiddleTopHash"></div>
+    <div id="ElevenYardLineMiddleTopHash"></div>
+    <div id="TwelveYardLineMiddleTopHash"></div>
+    <div id="ThirteenYardLineMiddleTopHash"></div>
+    <div id="FourteenYardLineMiddleTopHash"></div>
+    <div id="SixteenYardLineMiddleTopHash"></div>
+    <div id="SeventeenYardLineMiddleTopHash"></div>
+    <div id="EighteenYardLineMiddleTopHash"></div>
+    <div id="NineteenYardLineMiddleTopHash"></div>
+    <div id="TwentyOneYardLineMiddleTopHash"></div>
+    <div id="TwentyTwoYardLineMiddleTopHash"></div>
+    <div id="TwentyThreeYardLineMiddleTopHash"></div>
+    </div>
+    <div class="MiddleBottomHash">
+    <div id="OneYardLineMiddleBottomHash"></div>
+    <div id="TwoYardLineMiddleBottomHash"></div>
+    <div id="ThreeYardLineMiddleBottomHash"></div>
+    <div id="FourYardLineMiddleBottomHash"></div>
+    <div id="SixYardLineMiddleBottomHash"></div>
+    <div id="SevenYardLineMiddleBottomHash"></div>
+    <div id="EightYardLineMiddleBottomHash"></div>
+    <div id="NineYardLineMiddleBottomHash"></div>
+    <div id="ElevenYardLineMiddleBottomHash"></div>
+    <div id="TwelveYardLineMiddleBottomHash"></div>
+    <div id="ThirteenYardLineMiddleBottomHash"></div>
+    <div id="FourteenYardLineMiddleBottomHash"></div>
+    <div id="SixteenYardLineMiddleBottomHash"></div>
+    <div id="SeventeenYardLineMiddleBottomHash"></div>
+    <div id="EighteenYardLineMiddleBottomHash"></div>
+    <div id="NineteenYardLineMiddleBottomHash"></div>
+    <div id="TwentyOneYardLineMiddleBottomHash"></div>
+    <div id="TwentyTwoYardLineMiddleBottomHash"></div>
+    <div id="TwentyThreeYardLineMiddleBottomHash"></div>
+    </div>
+    <div class="BottomHash">
+    <div id="OneYardLineBottomHash"></div>
+    <div id="TwoYardLineBottomHash"></div>
+    <div id="ThreeYardLineBottomHash"></div>
+    <div id="FourYardLineBottomHash"></div>
+    <div id="SixYardLineBottomHash"></div>
+    <div id="SevenYardLineBottomHash"></div>
+    <div id="EightYardLineBottomHash"></div>
+    <div id="NineYardLineBottomHash"></div>
+    <div id="ElevenYardLineBottomHash"></div>
+    <div id="TwelveYardLineBottomHash"></div>
+    <div id="ThirteenYardLineBottomHash"></div>
+    <div id="FourteenYardLineBottomHash"></div>
+    <div id="SixteenYardLineBottomHash"></div>
+    <div id="SeventeenYardLineBottomHash"></div>
+    <div id="EighteenYardLineBottomHash"></div>
+    <div id="NineteenYardLineBottomHash"></div>
+    <div id="TwentyOneYardLineBottomHash"></div>
+    <div id="TwentyTwoYardLineBottomHash"></div>
+    <div id="TwentyThreeYardLineBottomHash"></div>
+    </div>
+    <div id="FiveYardLine"></div>
+    <div id="TenYardLineTopMark">&lt10;</div>
+    <div id="TenYardLine"></div>
+    <div id="TenYardLineBottomMark">&lt10;</div>
+    <div id="FifteenYardLine"></div>
+    <div id="TwentyYardLineTopMark">&lt20;</div>
+    <div id="TwentyYardLine"></div>
+    <div id="TwentyYardLineBottomMark">&lt20;</div>
+  </div>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="static/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="static/js/bootstrap.min.js"></script>
+
+</body>
+</html>
