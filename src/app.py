@@ -120,6 +120,7 @@ def home_page():
     # pass the records to the template and render it
     return render_template('home.html', data=data)
 
+
 # get just the confusion matrices
 @app.route('/get_accuracy')
 def get_accuracy():
@@ -152,6 +153,10 @@ def guess():
     # update the proper cells
     user_cm[y][user_x] += 1
     model_cm[y][model_x] += 1
+
+    # save out the confusion matrices (the user shouldn't be waiting for this)
+    np.savetxt('data/user_cm.csv', user_cm, delimiter=',')
+    np.savetxt('data/model_cm.csv', model_cm, delimiter=',')
 
     # respond with the updated aggregate stats (the two confusion matrices as json)
     return jsonify({'model_version':model_version})
