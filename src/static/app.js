@@ -24,11 +24,8 @@ function evaluate(event){
     $modelcorrect = true
   }
 
-  // grab the user's guess
-  var $userguess = $('#defenseBox').val();
-
   // determine whether the user was right
-  if($userguess == event.data.play) {
+  if(event.data.user_pred == event.data.play) {
     $usercorrect = true
   }
 
@@ -56,7 +53,10 @@ function evaluate(event){
            url: "/guess",
            contentType: "application/json",
            dataType: "json",
-           data: JSON.stringify({"actual_play": event.data.play, "user_guess": $userguess, "model_guess": event.data.play_pred}),
+           data: JSON.stringify({
+             "actual_play": event.data.play,
+             "user_guess": event.data.user_pred,
+             "model_guess": event.data.play_pred}),
            success: display_accuracy()
        });
 }

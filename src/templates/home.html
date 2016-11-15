@@ -72,16 +72,15 @@
   <div class="page-header">
     <h3>Choose What to Defend</h3>
 
-    <select class="selectpicker" id="defenseBox">
-      <option value="PASS">Pass</option>
-      <option value="RUSH">Rush</option>
-      <option value="KICK">Kick</option>
-    </select>
-    <button type="button" id="defendButton" class="btn btn-sm btn-primary">Defend</button>
+    <button type="button" id="passButton" class="btn btn-sm btn-primary">Pass</button>
+    <button type="button" id="rushButton" class="btn btn-sm btn-success">Rush</button>
+    <button type="button" id="kickButton" class="btn btn-sm btn-info">Kick</button>
 
     <script>
       $(document).ready(function(){
-        $('#defendButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}"}, evaluate);
+        $('#passButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"PASS"}, evaluate);
+        $('#rushButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"RUSH"}, evaluate);
+        $('#kickButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"KICK"}, evaluate);
         display_accuracy();
       });
     </script>
