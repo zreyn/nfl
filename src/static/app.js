@@ -24,20 +24,31 @@ function evaluate(event){
     $modelcorrect = true
   }
 
+  // show the right/wrong message
+  if ($modelcorrect) {
+    $('#model_right').toggle('slow', function() {
+      // Animation complete.
+    });
+  }
+  else {
+    $('#model_wrong').toggle('slow', function() {
+      // Animation complete.
+    });
+  }
+
   // determine whether the user was right
   if(event.data.user_pred == event.data.play) {
     $usercorrect = true
   }
 
-
   // show the right/wrong message
   if ($usercorrect) {
-    $('#right').toggle('slow', function() {
+    $('#user_right').toggle('slow', function() {
       // Animation complete.
     });
   }
   else {
-    $('#wrong').toggle('slow', function() {
+    $('#user_wrong').toggle('slow', function() {
       // Animation complete.
     });
   }

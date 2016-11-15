@@ -25,8 +25,10 @@
           href="{{ url_for('static', filename='css/bootstrap-select.min.css') }}">
 
     <!-- Custom feel CSS -->
+    <!--
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/cover.css') }}">
+    -->
 
 </head>
 
@@ -60,54 +62,115 @@
 
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="page-header">
-    <h1 class="cover-heading">What will they do?</h1>
-    <p class="lead">Offense: {{ data.record.OffenseTeam }}</p>
-    <p class="lead">Q{{ data.record.Quarter }} {{ '{:02}'.format(data.record.Minute) }}:{{ '{:02}'.format(data.record.Second) }}</p>
-    <p class="lead">Down: {{ data.record.Down }} and {{ data.record.ToGo }}</p>
-    <p class="lead">Spot: {{ data.record.YardLineDirection }} {{ data.record.YardLineFixed}}</p>
-    <p class="lead">Formation: {{ data.record.Formation }}</p>
+    <h2 class="cover-heading">Pick the Play</h2>
+
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title">Situation</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>Offense</td>
+              <td>{{ data.record.OffenseTeam }}</td>
+            </tr>
+            <tr>
+              <td>Time</td>
+              <td>Q{{ data.record.Quarter }} {{ '{:02}'.format(data.record.Minute) }}:{{ '{:02}'.format(data.record.Second) }}</td>
+            </tr>
+            <tr>
+              <td>Down</td>
+              <td>{{ data.record.Down }} and {{ data.record.ToGo }}</td>
+            </tr>
+            <tr>
+              <td>Spot</td>
+              <td>{{ data.record.YardLineDirection }} {{ data.record.YardLineFixed}}</td>
+            </tr>
+            <tr>
+              <td>Formation</td>
+              <td>{{ data.record.Formation }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 
-  <!-- User's choice of defense -->
+  <!-- The user/model predictions -->
   <div class="page-header">
-    <h3>Choose What to Defend</h3>
+    <h3>Predictions</h3>
 
-    <button type="button" id="passButton" class="btn btn-sm btn-primary">Pass</button>
-    <button type="button" id="rushButton" class="btn btn-sm btn-success">Rush</button>
-    <button type="button" id="kickButton" class="btn btn-sm btn-info">Kick</button>
+    <div class="row">
+        <div class="col-md-6">
 
-    <script>
-      $(document).ready(function(){
-        $('#passButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"PASS"}, evaluate);
-        $('#rushButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"RUSH"}, evaluate);
-        $('#kickButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"KICK"}, evaluate);
-        display_accuracy();
-      });
-    </script>
+            <!-- The user's prediction -->
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Your Guess</h3>
+            </div>
+            <div class="panel-body">
+              <button type="button" id="passButton" class="btn btn-sm btn-primary">Pass</button>
+              <button type="button" id="rushButton" class="btn btn-sm btn-success">Rush</button>
+              <button type="button" id="kickButton" class="btn btn-sm btn-info">Kick</button>
+
+              <script>
+                $(document).ready(function(){
+                  $('#passButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"PASS"}, evaluate);
+                  $('#rushButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"RUSH"}, evaluate);
+                  $('#kickButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"KICK"}, evaluate);
+                  display_accuracy();
+                });
+              </script>
+
+              <h2>
+                <span class="label label-success" id="user_right" style="display:none;">Right</span>
+                <span class="label label-danger" id="user_wrong" style="display:none;">Wrong</span>
+              </h2>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-6">
+
+          <!-- The model's prediction -->
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">The Model's Guess</h3>
+            </div>
+            <div class="panel-body" id="prediction" style="display:none;">
+              <h4 class="cover-heading">
+                {{ data.play_pred }}
+                (pass: {{ '{:03.2f}'.format(data.probas[1]) }},
+                rush: {{ '{:03.2f}'.format(data.probas[2]) }},
+                kick: {{ '{:03.2f}'.format(data.probas[0]) }})
+              </h4>
+
+              <h2>
+                <span class="label label-success" id="model_right" style="display:none;">Right</span>
+                <span class="label label-danger" id="model_wrong" style="display:none;">Wrong</span>
+              </h2>
+
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 
-  <!-- The model's prediction -->
-  <div class="page-header" id="prediction" style="display:none;">
-    <h4 class="cover-heading">The model picks: {{ data.play_pred }}</h4>
-    <p class="lead">Probabilities
-      [pass: {{ '{:04.2f}'.format(data.probas[1]) }},
-      rush: {{ '{:04.2f}'.format(data.probas[2]) }},
-      kick: {{ '{:04.2f}'.format(data.probas[0]) }}]
-    </p>
-  </div>
 
   <!-- The actual play outcome -->
   <div class="page-header" id="outcome" style="display:none;">
-      <h4 class="cover-heading">What really happened:</h4>
+      <h3 class="cover-heading">Actual Play</h3>
       <p class="lead">{{ data.record.Description }}</p>
-      <p class="lead" id="right" style="display:none;">Good defense!</p>
-      <p class="lead" id="wrong" style="display:none;">You blew it!</p>
-      <p class="lead">
-        <a href="/" class="btn btn-lg btn-default">Play Again</a>
-      </p>
+        <p class="lead">
+          <a href="/" class="btn btn-lg btn-default">Play Again</a>
+        </p>
+      </div>
   </div>
 
-  <div class="page-header" id="accuracy"></div>
+  <div class="well" id="accuracy"></div>
 
 </div>
 
