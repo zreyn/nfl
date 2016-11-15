@@ -67,6 +67,7 @@
         <h3 class="panel-title">Situation</h3>
       </div>
       <div class="panel-body">
+        <div class="row">
         <table class="table">
           <tbody>
             <tr>
@@ -93,12 +94,7 @@
         </table>
       </div>
     </div>
-
   </div>
-
-  <!-- The user/model predictions -->
-  <div class="page-header">
-    <h3>Predictions</h3>
 
     <div class="row">
         <div class="col-md-6">
@@ -155,20 +151,23 @@
           </div>
         </div>
       </div>
+    </div>
+
+
+
+    <!-- The actual play outcome -->
+    <div class="page-header" id="outcome" style="display:none;">
+        <h3 class="cover-heading">Actual Play</h3>
+        <p class="lead">{{ data.record.Description }}</p>
+          <p class="lead">
+            <a href="/" class="btn btn-lg btn-default">Play Again</a>
+          </p>
+    </div>
+
+
+    <div class="well" id="accuracy"></div>
+
   </div>
-
-
-  <!-- The actual play outcome -->
-  <div class="page-header" id="outcome" style="display:none;">
-      <h3 class="cover-heading">Actual Play</h3>
-      <p class="lead">{{ data.record.Description }}</p>
-        <p class="lead">
-          <a href="/" class="btn btn-lg btn-default">Play Again</a>
-        </p>
-      </div>
-  </div>
-
-  <div class="well" id="accuracy"></div>
 
 </div>
 
