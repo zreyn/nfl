@@ -120,6 +120,23 @@ def home_page():
     # pass the records to the template and render it
     return render_template('home.html', data=data)
 
+# about the author page
+@app.route('/author')
+def author_page():
+
+    data = {}
+
+    # pass the records to the template and render it
+    return render_template('author.html', data=data)
+
+# about the author page
+@app.route('/project')
+def project_page():
+
+    data = {}
+
+    # pass the records to the template and render it
+    return render_template('project.html', data=data)
 
 # get just the confusion matrices
 @app.route('/get_accuracy')

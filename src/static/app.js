@@ -4,11 +4,16 @@ This file holds all the javascript needed for the page
 ============================================================================
 */
 
-function display_accuracy(){
+function display_accuracy() {
   $('#accuracy').load('/get_accuracy');
 }
 
-function evaluate(event){
+function evaluate(event) {
+
+  // deactivate the buttons
+  $('#passButton').prop('disabled', true);
+  $('#rushButton').prop('disabled', true);
+  $('#kickButton').prop('disabled', true);
 
   // keep track of whether the user and/or model was correct
   var $modelcorrect = false

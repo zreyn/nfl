@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Predict the Play</title>
+  <meta name="description" content="Predict the Play">
+  <meta name="author" content="Zane Reynolds">
+
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='jquery.js') }}">
+    </script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='app.js') }}">
+    </script>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+
+<body>
+
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">Predict the Play</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/">Home</a></li>
+          <li><a href="/project">Project</a></li>
+          <li><a href="/author">Author</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+
+<!-- Spacer -->
+<div class="page-header"><p></p></div>
+
+
+  <!-- Main container -->
+<div class="container theme-showcase" role="main">
+
+  <div class="page-header">
+    <h2 class="cover-heading">About the Author</h2>
+  </div>
+
+  <!-- Use an adaptive 2-column format -->
+  <div class="page-header">
+
+    <div class="row">
+        <div class="col-md-6">
+
+          <!-- Short bio -->
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Zane Reynolds</h3>
+            </div>
+            <div class="panel-body">
+                <p class="lead">
+                  I started my career developing detection and classification
+                  algorithms for digital signals for a small company in Florida.
+                  I left  with the intention of finishing my PhD in Computer
+                  Science, since I just needed to finish my dissertation in
+                  machine learning for cybersecurity, but I never completed it.
+                </p>
+                <p class="lead">
+                  I wanted to try software development at a really large scale,
+                  so I joined Amazon.  A little over a year in, I realized much
+                  of the job felt like high-tech plumbing (e.g. just moving data
+                  from one system to another) and became the manager of my team
+                  to increase the scope of my impact and learn how to build an
+                  effective team.
+                </p>
+                <p class="lead">
+                  Realizing that I was drifting too far from the technical
+                  problem-solving that drew me into Computer Science, I left to
+                  take the immersive Data Science course at Galvanize to refresh
+                  and update my skills in machine learning such as python, data
+                  engineering, classification and regression algorithms, and
+                  unsupervised learning.  Now I can call myself a Data Scientist!
+                </p>
+                <p class="lead">
+                  One of the reasons I got into Computer Science is that your
+                  skills are so widely applicable, you can change domains and
+                  reinvent yourself throughout your career.  For me, I changed
+                  from academic research to signal processing, then to
+                  e-commerce and to leadership.  This change simply pivots me
+                  closer to my original trajectory, but with a much richer set
+                  of experiences under my belt.
+                </p>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-6">
+
+          <!-- Links -->
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">Links</h3>
+            </div>
+            <div class="panel-body">
+              <ul>
+                <li><a href="https://www.linkedin.com/in/zreyn">LinkedIn Profile</a></li>
+                <li><a href="https://github.com/zreyn">GitHub Profile</a></li>
+                <li><a href="mailto:zane.reynolds@gmail.com">zane.reynolds@gmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="static/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="static/js/bootstrap.min.js"></script>
+
+</body>
+</html>
