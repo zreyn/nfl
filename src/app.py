@@ -165,7 +165,7 @@ def get_accuracy():
 
 
 # Log the user guesses.  Test with:
-# curl -H "Content-Type: application/json" -X POST -d '@example.json' http://localhost:8080/guess
+# curl -H "Content-Type: application/json" -X POST -d '@src/static/example.json' http://localhost:8080/guess
 @app.route('/guess', methods=['POST'])
 def guess():
 
