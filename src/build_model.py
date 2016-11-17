@@ -30,11 +30,14 @@ def read_data(filename):
 if __name__ == '__main__':
 
     # read in the prepped data
-    data = read_data('data/pbp-prepped.csv')
+    data = read_data('../data/pbp-training.csv')
+
+    # name the model
+    model_name = 'gbc-v4'
 
     # create the model
     model = create_model(data)
 
     # save the model
-    with open('data/model.pkl', 'w') as f:
+    with open('../data/'+model_name+'.pkl', 'w') as f:
         pickle.dump(model, f)

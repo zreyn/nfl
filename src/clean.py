@@ -8,6 +8,12 @@ def remove_inner_quotes(infile, outfile):
                 fout.write(line.replace('\\"', ''))
 
 def clean(filename):
+    '''
+    This function takes one of the nflsavant.com csv files and cleans it up by
+    removing extraneous columns, normalizing the column names, remapping and
+    computing values, etc.
+    '''
+
     pbp = pd.read_csv(filename)
 
     # convert column names to upper case (since they are inconsistent in the data by season)
