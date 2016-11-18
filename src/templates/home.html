@@ -71,24 +71,54 @@
         <table class="table">
           <tbody>
             <tr>
+              <td>Game</td>
+              <td>{{ data.record.AWAYTEAM }} @ {{ data.record.HOMETEAM }} on {{ data.record.GAMEDATE}}</td>
+            </tr>
+            <tr>
+              <td>Weather</td>
+              {% if data.record.WEATHER != 'UNKNOWN'  %}
+              <td>{{ data.record.TEMERATURE }} degrees, {{ data.record.HUMIDITY }}% humidity, {{}} mph winds</td>
+              {% else %}
+              <td>UNKNOWN</td>
+              {% endif %}
+            </tr>
+            <tr>
+              <td>Under Roof</td>
+              {% if data.record.UNDERROOF == 1  %}
+              <td>Yes</td>
+              {% else %}
+              <td>No</td>
+              {% endif %}
+            </tr>
+            <tr>
+              <td>Playing Surface</td>
+              {% if data.record.ISTURF == 1  %}
+              <td>Turf</td>
+              {% else %}
+              <td>Grass</td>
+              {% endif %}
+            </tr>
+            <tr>
               <td>Offense</td>
-              <td>{{ data.record.OffenseTeam }}</td>
+              {% if data.record.SCORINGMARGIN > 0 %}
+              <td>{{ data.record.OFFENSETEAM }} up by {{ data.record.SCORINGMARGIN }}</td>
+              {% elif data.record.SCORINGMARGIN == 0 %}
+              <td>{{ data.record.OFFENSETEAM }} tie score</td>
+              {% else %}
+              <td>{{ data.record.OFFENSETEAM }} down by {{ -1*data.record.SCORINGMARGIN }}</td>
+              {% endif%}
             </tr>
             <tr>
               <td>Time</td>
-              <td>Q{{ data.record.Quarter }} {{ '{:02}'.format(data.record.Minute) }}:{{ '{:02}'.format(data.record.Second) }}</td>
+              <td>Q{{ data.record.QUARTER }} {{ '{:02}'.format(data.record.MINUTE) }}:{{ '{:02}'.format(data.record.SECOND) }}</td>
             </tr>
             <tr>
               <td>Down</td>
-              <td>{{ data.record.Down }} and {{ data.record.ToGo }}</td>
-            </tr>
-            <tr>
-              <td>Spot</td>
-              <td>{{ data.record.YardLineDirection }} {{ data.record.YardLineFixed}}</td>
+              <td>{{ data.record.DOWN }} and {{ data.record.TOGO }} on the {{ data.record.YARDLINEDIRECTION }} {{ data.record.YARDLINEFIXED}}</td>
             </tr>
             <tr>
               <td>Formation</td>
-              <td>{{ data.record.Formation }}</td>
+              <td>{{ data.record.FORMATION }}</td>
             </tr>
           </tbody>
         </table>
@@ -111,9 +141,9 @@
 
               <script>
                 $(document).ready(function(){
-                  $('#passButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"PASS"}, evaluate);
-                  $('#rushButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"RUSH"}, evaluate);
-                  $('#kickButton').click({play:"{{ data.record.Play }}", play_pred:"{{ data.play_pred }}", user_pred:"KICK"}, evaluate);
+                  $('#passButton').click({play:"{{ data.record.PLAY }}", play_pred:"{{ data.play_pred }}", user_pred:"PASS"}, evaluate);
+                  $('#rushButton').click({play:"{{ data.record.PLAY }}", play_pred:"{{ data.play_pred }}", user_pred:"RUSH"}, evaluate);
+                  $('#kickButton').click({play:"{{ data.record.PLAY }}", play_pred:"{{ data.play_pred }}", user_pred:"KICK"}, evaluate);
                   display_accuracy();
                 });
               </script>
@@ -158,7 +188,7 @@
     <!-- The actual play outcome -->
     <div class="page-header" id="outcome" style="display:none;">
         <h3 class="cover-heading">Actual Play</h3>
-        <p class="lead">{{ data.record.Description }}</p>
+        <p class="lead">{{ data.record.DESCRIPTION }}</p>
           <p class="lead">
             <a href="/" class="btn btn-lg btn-default">Play Again</a>
           </p>

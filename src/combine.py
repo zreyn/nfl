@@ -54,6 +54,12 @@ def parse_weather(wstring):
 
     return ret_values
 
+def compute_margin(play):
+    if play['ISATHOME'] == 1:
+        return play['pbp_score_hm'] - play['pbp_score_aw']
+    else:
+        return play['pbp_score_aw'] - play['pbp_score_hm']
+
 def add_features(pbp, pbp_pfr):
 
     # add some empty columns to fill
@@ -95,12 +101,15 @@ def add_features(pbp, pbp_pfr):
 def reclean(pbp):
 
     # break out the values from the weather
-    pbp = pd.concat([pbp, pbp.Weather.apply(lambda x: pd.Series(parse_weather(x)))], axis=1)
+    pbp = pd.concat([pbp, pbp.WEATHER.apply(lambda x: pd.Series(parse_weather(x)))], axis=1)
 
     # convert HOMETEAM / AWAYTEAM to ISATHOME relative to offense
+    pbp['ISATHOME'] = pbp.apply(lambda x: play_type(x), axis=1)
 
     # convert HOMESCORE / AWAYSCORE to scoring margin relative to offense
+    pbp['SCORINGMARGIN'] = pbp.apply(lambda x: compute_margin(x), axis=1)
 ​
+    return pbp
 
 if __name__ == '__main__':
 
@@ -117,6 +126,7 @@ if __name__ == '__main__':
     # transformations should go in the modeling.py module.
     pbp_pfr = pd.read_csv('../data/pbp-pfr.csv')
     pbp = add_features(pbp, pbp_pfr)
+    pbp = reclean(pbp)
 
     # split the data into a training and validation set (for the users and model to compete over)
     # 10% is about 13.5k plays

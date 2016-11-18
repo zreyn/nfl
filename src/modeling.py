@@ -6,10 +6,6 @@ import random
 
 def prep(df):
 
-    # A few columns have to go for us to build a model (though we use them for user presentation)
-    df.drop(['YardLineFixed', 'YardLineDirection','Description', 'PlayType', \
-             'PassType', 'RushDirection', 'Yards', 'DefenseTeam'], axis=1, inplace=True)
-
     # create dummy variables for formations
     form_dummies = pd.get_dummies(df.Formation)
     form_dummies.columns = map(lambda x: 'FORMATION_' + x.replace (' ', '_'), form_dummies.columns)
@@ -20,7 +16,7 @@ def prep(df):
 
     # combine the dummy variables and drop the categorical versions
     df_prepped = pd.concat(
-        [df.ix[:,['Quarter', 'Minute', 'Second', 'Down', 'ToGo', 'YardLine', 'Play']],
+        [df.ix[:,['QUARTER', 'MINUTE', 'SECOND', 'DOWN', 'TOGO', 'YARDLINE', 'PLAY']],
         team_dummies,
         form_dummies], axis=1)
 
@@ -91,7 +87,7 @@ def prep_record(record):
 
     # Combine the dummy variables and drop the categorical versions
     record = pd.concat(
-        [record.ix[:,['Quarter', 'Minute', 'Second', 'Down', 'ToGo', 'YardLine', 'Play']],
+        [record.ix[:,['QUARTER', 'MINUTE', 'SECOND', 'DOWN', 'TOGO', 'YARDLINE', 'PLAY']],
         df2,
         df1], axis=1)
 
