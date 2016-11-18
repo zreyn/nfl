@@ -44,9 +44,9 @@ def clean(filename):
          'ISFUMBLE', \
          'PENALTYTYPE', \
          'PENALTYYARDS', \
-         'SEASONYEAR', \
-         'GAMEID', \
-         'GAMEDATE', \
+         #'SEASONYEAR', \
+         #'GAMEID', \
+         #'GAMEDATE', \
          'ISNOPLAY', \
          'DEFENSESCORE',
          'ISMESUREMENT',
@@ -58,47 +58,27 @@ def clean(filename):
          'SCOREDIFF'], \
           axis=1, inplace=True,  errors='ignore')
 
-    # rename the columns to be more friendly
-    pbp.columns = ['Quarter', \
-                    'Minute', \
-                    'Second', \
-                    'OffenseTeam', \
-                    'DefenseTeam', \
-                    'Down', \
-                    'ToGo', \
-                    'YardLine', \
-                    'Description', \
-                    'Yards', \
-                    'Formation', \
-                    'PlayType', \
-                    'IsRush', \
-                    'IsPass', \
-                    'PassType', \
-                    'RushDirection', \
-                    'YardLineFixed', \
-                    'YardLineDirection']
-
     # get rid of all the kicks except punts and field goals
-    pbp = pbp[(pbp.PlayType != 'KICK OFF') & (pbp.PlayType != 'EXTRA POINT') & \
-              (pbp.PlayType != 'TWO-POINT CONVERSION')]
+    pbp = pbp[(pbp.PLAYTYPE != 'KICK OFF') & (pbp.PLAYTYPE != 'EXTRA POINT') & \
+              (pbp.PLAYTYPE != 'TWO-POINT CONVERSION')]
 
     # get rid of all the timeout plays
-    pbp = pbp[pbp.OffenseTeam.notnull()]
+    pbp = pbp[pbp.OFFENSETEAM.notnull()]
 
     # get rid of all of the no-plays
-    pbp = pbp[(pbp.PlayType != 'NO PLAY') & (pbp.PlayType != 'EXCEPTION') & \
-              (pbp.PlayType != 'CLOCK STOP')& (pbp.PlayType != 'PENALTY')]
+    pbp = pbp[(pbp.PLAYTYPE != 'NO PLAY') & (pbp.PLAYTYPE != 'EXCEPTION') & \
+              (pbp.PLAYTYPE != 'CLOCK STOP')& (pbp.PLAYTYPE != 'PENALTY')]
 
     # get rid of all the malformed pass types
     passtypes = ['DEEP MIDDLE', 'SHORT LEFT', 'SHORT RIGHT', 'SHORT MIDDLE', \
                  'DEEP LEFT', 'DEEP RIGHT']
-    pbp = pbp[(pbp['PassType'].isin(passtypes)) | (pbp['PassType'].isnull())]
+    pbp = pbp[(pbp['PASSTYPE'].isin(passtypes)) | (pbp['PASSTYPE'].isnull())]
 
     # replace the nan PlayTypes with 'DIRECT SNAP'
-    pbp.PlayType = pbp.PlayType.fillna('DIRECT SNAP')
+    pbp.PLAYTYPE = pbp.PLAYTYPE.fillna('DIRECT SNAP')
 
     # drop the existing IsRush/IsPass and create new ones
-    pbp.drop(['IsRush', 'IsPass'], axis=1, inplace=True)
+    pbp.drop(['ISRUSH', 'ISPASS'], axis=1, inplace=True)
 
     play_to_rush = {
         'RUSH': 1,
@@ -112,7 +92,7 @@ def clean(filename):
         'DIRECT SNAP' : 1
     }
 
-    pbp['IsRush'] = pbp['PlayType'].map(play_to_rush)
+    pbp['ISRUSH'] = pbp['PLAYTYPE'].map(play_to_rush)
 
     play_to_pass = {
         'RUSH': 0,
@@ -126,7 +106,7 @@ def clean(filename):
         'DIRECT SNAP' : 0
     }
 
-    pbp['IsPass'] = pbp['PlayType'].map(play_to_pass)
+    pbp['ISPASS'] = pbp['PLAYTYPE'].map(play_to_pass)
 
     play_to_kick = {
         'RUSH': 0,
@@ -140,29 +120,29 @@ def clean(filename):
         'DIRECT SNAP' : 0
     }
 
-    pbp['IsKick'] = pbp['PlayType'].map(play_to_kick)
+    pbp['ISKICK'] = pbp['PLAYTYPE'].map(play_to_kick)
 
 
     # Combine the dummy classes into one var and drop the dummies
     def play_type(x):
-        if x.IsRush == 1:
+        if x.ISRUSH == 1:
             return 'RUSH'
-        if x.IsPass == 1:
+        if x.ISPASS == 1:
             return 'PASS'
-        if x.IsKick == 1:
+        if x.ISKICK == 1:
             return 'KICK'
         else:
             return 'NaN'
 
-    pbp['Play'] = pbp.apply(lambda x: play_type(x), axis=1)
+    pbp['PLAY'] = pbp.apply(lambda x: play_type(x), axis=1)
 
-    pbp.drop(['IsRush', 'IsPass', 'IsKick'], axis=1, inplace=True)
+    pbp.drop(['ISRUSH', 'ISPASS', 'ISKICK'], axis=1, inplace=True)
 
     # Convert some columns to categorical
-    pbp.Formation = pbp.Formation.astype("category")
-    pbp.OffenseTeam = pbp.OffenseTeam.astype("category")
-    pbp.DefenseTeam = pbp.DefenseTeam.astype("category")
-    pbp.Play = pbp.Play.astype("category")
+    pbp.FORMATION = pbp.FORMATION.astype("category")
+    pbp.OFFENSETEAM = pbp.OFFENSETEAM.astype("category")
+    pbp.DEFENSETEAM = pbp.DEFENSETEAM.astype("category")
+    pbp.PLAY = pbp.PLAY.astype("category")
 
     return pbp
 
