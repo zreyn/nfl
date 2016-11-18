@@ -184,6 +184,7 @@ def clean(pbp_pfr):
             'grass' : 'grass'
         }
     pbp_pfr['isturf'] = pbp_pfr['Surface'].map(surface_to_isturf)
+    pbp_pfr.drop(['Surface'], axis=1, inplace=True,  errors='ignore')
 
     # There are 238 games (~26%) without weather data; we should replace them with 'UNKNOWN'
     pbp_pfr['Weather'] = pbp_pfr['Weather'].fillna('UNKNOWN')

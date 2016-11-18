@@ -14,6 +14,15 @@ def combine(filenames):
 
 def add_features(pbp, pbp_pfr):
 
+    # add some empty columns to fill
+    pbp['ISTURF'] = np.nan
+    pbp['UNDERROOF'] = np.nan
+    pbp['WEATHER'] = np.nan
+    pbp['HOMETEAM'] = np.nan
+    pbp['AWAYTEAM'] = np.nan
+    pbp['HOMESCORE'] = np.nan
+    pbp['AWAYSCORE'] = np.nan
+
     # for each play in our main dataframe, find the corresponding play in the other
     for play in pbp.iterrows():
         matching_play = pbp_pfr[
@@ -30,7 +39,13 @@ def add_features(pbp, pbp_pfr):
         if len(matching_play.index) != 1:
             print 'Uh oh!', len(matching_play.index), 'matching records'
         else:
-            #XXX do we have to create the new columns first? most likely
+            play['ISTURF'] = matching_play['isturf']
+            play['UNDERROOF'] = matching_play['under_roof']
+            play['WEATHER'] = matching_play['Weather']
+            play['HOMETEAM'] = matching_play['home_team']
+            play['AWAYTEAM'] = matching_play['away_team']
+            play['HOMESCORE'] = matching_play['pbp_score_hm']
+            play['AWAYSCORE'] = matching_play['pbp_score_aw']
 
     return pbp
 
