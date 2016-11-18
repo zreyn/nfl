@@ -18,7 +18,7 @@ import cPickle as pickle
 import pandas as pd
 import numpy as np
 from flask import Flask, render_template, request, jsonify
-from build_model import prep_record
+from build_model import prep_records
 import socket
 import requests
 import time
@@ -63,7 +63,7 @@ def get_a_play():
 def predict(record):
 
     # prep the record for the model
-    record_prepped = prep_record(pd.DataFrame(record).T)
+    record_prepped = prep_records(pd.DataFrame(record).T)
 
     # split the class from the features
     y_one = record_prepped['Play']

@@ -4,94 +4,76 @@ from sklearn.ensemble import GradientBoostingClassifier
 import cPickle as pickle
 import random
 
-def prep(df):
+columns_to_keep = ['QUARTER', 'MINUTE', 'SECOND', 'DOWN', 'TOGO', 'YARDLINE', 'PLAY']
 
-    # create dummy variables for formations
-    form_dummies = pd.get_dummies(df.Formation)
-    form_dummies.columns = map(lambda x: 'FORMATION_' + x.replace (' ', '_'), form_dummies.columns)
+formations = [
+'FIELD_GOAL',
+'NO_HUDDLE',
+'NO_HUDDLE_SHOTGUN',
+'PUNT',
+'SHOTGUN',
+'UNDER_CENTER',
+'WILDCAT']
 
-    # create dummy variables for teams
-    team_dummies = pd.get_dummies(df.OffenseTeam)
-    team_dummies.columns = map(lambda x: 'TEAM_' + str(x), team_dummies.columns)
+teams = [
+'ARI',
+'ATL',
+'BAL',
+'BUF',
+'CAR',
+'CHI',
+'CIN',
+'CLE',
+'DAL',
+'DEN',
+'DET',
+'GB',
+'HOU',
+'IND',
+'JAX',
+'KC',
+'LA',
+'MIA',
+'MIN',
+'NE',
+'NO',
+'NYG',
+'NYJ',
+'OAK',
+'PHI',
+'PIT',
+'SD',
+'SEA',
+'SF',
+'TB',
+'TEN',
+'WAS']
 
-    # combine the dummy variables and drop the categorical versions
-    df_prepped = pd.concat(
-        [df.ix[:,['QUARTER', 'MINUTE', 'SECOND', 'DOWN', 'TOGO', 'YARDLINE', 'PLAY']],
-        team_dummies,
-        form_dummies], axis=1)
-
-    return df_prepped
-
-def prep_record(record):
+def prep_records(records):
     '''
-    INPUT: One play record as a single row DataFrame in "clean form"
-    OUTPUT: The record in "model form"
-
-    This will work for multiple records, although it's really meant for one.
+    INPUT: A set of plays as rows in a DataFrame in "clean form"
+    OUTPUT: The plays in "model form"
     '''
-
-    formations = [
-    'FIELD_GOAL',
-    'NO_HUDDLE',
-    'NO_HUDDLE_SHOTGUN',
-    'PUNT',
-    'SHOTGUN',
-    'UNDER_CENTER',
-    'WILDCAT']
-
-    teams = [
-    'ARI',
-    'ATL',
-    'BAL',
-    'BUF',
-    'CAR',
-    'CHI',
-    'CIN',
-    'CLE',
-    'DAL',
-    'DEN',
-    'DET',
-    'GB',
-    'HOU',
-    'IND',
-    'JAX',
-    'KC',
-    'LA',
-    'MIA',
-    'MIN',
-    'NE',
-    'NO',
-    'NYG',
-    'NYJ',
-    'OAK',
-    'PHI',
-    'PIT',
-    'SD',
-    'SEA',
-    'SF',
-    'TB',
-    'TEN',
-    'WAS']
 
     # Dummy the team
-    df2 = pd.get_dummies(record.OffenseTeam)
+    df2 = pd.get_dummies(records.OFFENSETEAM)
     dummies_frame = pd.get_dummies(teams)
     df2 = df2.reindex(columns=dummies_frame.columns, fill_value=0)
     df2.columns = map(lambda x: 'TEAM_' + str(x), df2.columns)
 
     # Dummy the formation
-    df1 = pd.get_dummies(record.Formation)
+    df1 = pd.get_dummies(records.FORMATION)
     dummies_frame = pd.get_dummies(formations)
     df1 = df1.reindex(columns=dummies_frame.columns, fill_value=0)
     df1.columns = map(lambda x: 'FORMATION_' + x.replace (' ', '_'), df1.columns)
 
-    # Combine the dummy variables and drop the categorical versions
-    record = pd.concat(
-        [record.ix[:,['QUARTER', 'MINUTE', 'SECOND', 'DOWN', 'TOGO', 'YARDLINE', 'PLAY']],
+    # combine the dummy variables with any other column we're keeping
+    records = pd.concat(
+        [records.ix[:,columns_to_keep],
         df2,
         df1], axis=1)
 
-    return record
+    return records
 
 def create_model(df_prepped):
 
@@ -117,7 +99,7 @@ if __name__ == '__main__':
     model_name = 'gbc-v4'
 
     # prep the data and create the model
-    model = create_model(prep(data))
+    model = create_model(prep_records(data))
 
     # save the model
     with open('../data/'+model_name+'.pkl', 'w') as f:
