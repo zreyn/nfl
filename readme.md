@@ -30,6 +30,12 @@ The 'Play' column is the target value consisting of 3 labels: {RUN, PASS, KICK}
 
 The data contains a total of 134,998 offensive plays run from 2013 - Wk 10 2016.
 
+To reproduce the data:
+1. Download NFL Savant data (http://nflsavant.com/about.php) and run src/clean.py
+2. Scrape Pro-Football-Reference (http://www.pro-football-reference.com/) using src/scrape.py
+3. Combine the two data sources and create a training and a validation set using src/create_training_data.py
+4. Outputs two .csv files: pbp-training and pbp-validation.
+
 ### Modeling
 
 Given situational features like the time on the game clock, the down, and yards to go, I built modles to predict the result of the play.  Initially, I evaluated several general models (not specific to season or team offense) including a Random Forest and Gradient Boosting Classifier.  
@@ -37,7 +43,8 @@ Given situational features like the time on the game clock, the down, and yards 
 
 While there are hundreds of thousands of plays executed during each NFL season, the amount of data per offense and situation is limited, so the data's density is low.  In addition, the players and play callers for offenses change year over year and even week to week, making historical data less pertinent to predicting upcoming plays.
 
-
+To build the model:
+1. Use src/modeling.py to prep the data (convert categorical variables to dummies) and fit the model.
 
 ### Evaluation
 
@@ -47,3 +54,7 @@ We can evaluate the performance of the models in two ways. 1) Split off a valida
 ### Deployment
 
 The user interface presents the user with a situation as if they are a defense (clock, team, yard line, formation); they will choose what to defend (short/long pass, run, kick, etc.).  The model will also make a prediction, but that is shown to the user after they have made their own prediction. The ground truth will be displayed and both predictions evaluated.  Compete against the model!
+
+To run:
+1. Make sure you've produced the clean data and built the model.
+2. Run src/app.py
