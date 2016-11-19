@@ -102,7 +102,7 @@ def add_features(pbp, pbp_pfr):
 
     # for each play in our main dataframe, find the corresponding play in the
     # other and copy the values over
-    pbp_sample.apply(lambda x: join(x, pbp_sample, pbp_pfr), axis=1)
+    pbp.apply(lambda x: join(x, pbp, pbp_pfr), axis=1)
 
     return pbp
 
