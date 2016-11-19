@@ -56,9 +56,9 @@ def parse_weather(wstring):
 
 def compute_margin(play):
     if play['ISATHOME'] == 1:
-        return play['pbp_score_hm'] - play['pbp_score_aw']
+        return play['HOMESCORE'] - play['AWAYSCORE']
     else:
-        return play['pbp_score_aw'] - play['pbp_score_hm']
+        return play['AWAYSCORE'] - play['HOMESCORE']
 
 def add_features(pbp, pbp_pfr):
 
@@ -75,7 +75,7 @@ def add_features(pbp, pbp_pfr):
     for i in xrange(pbp.shape[0]):
         play = pbp.iloc[i]
         matching_play = pbp_pfr[
-                (pbp_pfr['season'] == play['SEASONYEAR']) &
+                (pbp_pfr['game_id'].str.contains(str(play['GAMEID'])[:8])) &
                 (pbp_pfr['quarter'] == play['QUARTER']) &
                 (pbp_pfr['minute'] == play['MINUTE']) &
                 (pbp_pfr['second'] == play['SECOND']) &
@@ -83,6 +83,7 @@ def add_features(pbp, pbp_pfr):
                 (pbp_pfr['yds_to_go'] == play['TOGO']) &
                 (pbp_pfr['yardlinefixed'] == play['YARDLINEFIXED']) &
                 ~(pbp_pfr['detail'].str.startswith('Penalty')) &
+                ~(pbp_pfr['detail'].str.startswith('Timeout')) &
                 (((pbp_pfr['home_team'] == play['OFFENSETEAM']) & (pbp_pfr['away_team'] == play['DEFENSETEAM'])) | ((pbp_pfr['home_team'] == play['DEFENSETEAM']) & (pbp_pfr['away_team'] == play['OFFENSETEAM'])))
             ]
 
@@ -103,11 +104,16 @@ def add_features(pbp, pbp_pfr):
 
 def reclean(pbp):
 
+    # drop all of the remaining rows without a score
+    # (there were 4 due to misalignment of the two data sources and 329 due to
+    # missing data in scraped data, which is only 0.2% of the data)
+    pbp = pbp[pbp.HOMESCORE.notnull()]
+
     # break out the values from the weather
     pbp = pd.concat([pbp, pbp.WEATHER.apply(lambda x: pd.Series(parse_weather(x)))], axis=1)
 
     # convert HOMETEAM / AWAYTEAM to ISATHOME relative to offense
-    pbp['ISATHOME'] = pbp.apply(lambda x: play_type(x), axis=1)
+    pbp['ISATHOME'] = pbp.apply(lambda x: 1 if x.OFFENSETEAM == x.HOMETEAM else 0, axis=1)
 
     # convert HOMESCORE / AWAYSCORE to scoring margin relative to offense
     pbp['SCORINGMARGIN'] = pbp.apply(lambda x: compute_margin(x), axis=1)
