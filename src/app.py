@@ -18,7 +18,7 @@ import cPickle as pickle
 import pandas as pd
 import numpy as np
 from flask import Flask, render_template, request, jsonify
-from build_model import prep_records
+from modeling import prep_records
 import socket
 import requests
 import time

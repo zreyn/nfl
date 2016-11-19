@@ -44,9 +44,6 @@ def clean(filename):
          'ISFUMBLE', \
          'PENALTYTYPE', \
          'PENALTYYARDS', \
-         #'SEASONYEAR', \
-         #'GAMEID', \
-         #'GAMEDATE', \
          'ISNOPLAY', \
          'DEFENSESCORE',
          'ISMESUREMENT',

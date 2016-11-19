@@ -72,7 +72,7 @@ def add_features(pbp, pbp_pfr):
     pbp['AWAYSCORE'] = np.nan
 
     # for each play in our main dataframe, find the corresponding play in the other
-    for row in pbp.iterrows():
+    for i,row in enumerate(pbp.iterrows()):
         play = row[1]
         matching_play = pbp_pfr[
                 (pbp_pfr['season'] == play['SEASONYEAR']) &
@@ -96,6 +96,9 @@ def add_features(pbp, pbp_pfr):
             play['HOMESCORE'] = matching_play['pbp_score_hm']
             play['AWAYSCORE'] = matching_play['pbp_score_aw']
 
+        if i%1000 == 0:
+            print i, 'of', pbp.shape[0]
+
     return pbp
 
 def reclean(pbp):
@@ -108,7 +111,7 @@ def reclean(pbp):
 
     # convert HOMESCORE / AWAYSCORE to scoring margin relative to offense
     pbp['SCORINGMARGIN'] = pbp.apply(lambda x: compute_margin(x), axis=1)
-​
+
     return pbp
 
 if __name__ == '__main__':
@@ -125,7 +128,7 @@ if __name__ == '__main__':
     # user-friendly for presentation on the UI.  dummy variables and other
     # transformations should go in the modeling.py module.
     pbp_pfr = pd.read_csv('../data/pbp-pfr.csv')
-    pbp = add_features(pbp, pbp_pfr)
+    pbp = add_features(pbp, pbp_pfr) # this takes ~5 hours right now
     pbp = reclean(pbp)
 
     # split the data into a training and validation set (for the users and model to compete over)

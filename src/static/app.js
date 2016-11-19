@@ -34,11 +34,15 @@ function evaluate(event) {
     $('#model_right').toggle('slow', function() {
       // Animation complete.
     });
+    updateCookie("ModelRight", 1)
+    updateCookie("ModelTotal", 1)
   }
   else {
     $('#model_wrong').toggle('slow', function() {
       // Animation complete.
     });
+    updateCookie("ModelRight", 0)
+    updateCookie("ModelTotal", 1)
   }
 
   // determine whether the user was right
@@ -46,22 +50,27 @@ function evaluate(event) {
     $usercorrect = true
   }
 
-  // show the right/wrong message
+  // show the right/wrong message and update the cookies
   if ($usercorrect) {
     $('#user_right').toggle('slow', function() {
       // Animation complete.
     });
+    updateCookie("UserRight", 1)
+    updateCookie("UserTotal", 1)
   }
   else {
     $('#user_wrong').toggle('slow', function() {
       // Animation complete.
     });
+    updateCookie("UserRight", 0)
+    updateCookie("UserTotal", 1)
   }
 
   // show the outcome of the play
   $('#outcome').toggle('slow', function() {
     // Animation complete.
   });
+
 
   // let the server know the outcome
   $.ajax({
@@ -75,4 +84,35 @@ function evaluate(event) {
              "model_guess": event.data.play_pred}),
            success: display_accuracy()
        });
+}
+
+function updateCookie(cname, cvalue) {
+  var value = getCookie(cname);
+    if (value != "") {
+        setCookie(cname, cvalue, 7)
+    } else {
+        setCookie(cname, cvalue+value, 7)
+    }
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
