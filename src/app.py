@@ -66,8 +66,8 @@ def predict(record):
     record_prepped = prep_records(pd.DataFrame(record).T)
 
     # split the class from the features
-    y_one = record_prepped['Play']
-    X_one = record_prepped.drop(['Play'], axis=1).values
+    y_one = record_prepped['PLAY']
+    X_one = record_prepped.drop(['PLAY'], axis=1).values
 
     # run a predict and predict_proba to get the class and probabilities
     play_pred = model.predict(X_one)

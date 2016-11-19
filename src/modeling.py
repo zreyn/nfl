@@ -78,8 +78,8 @@ def prep_records(records):
 def create_model(df_prepped):
 
     # split the class from the values
-    y = df_prepped['Play']
-    X = df_prepped.drop(['Play'], axis=1).values
+    y = df_prepped['PLAY']
+    X = df_prepped.drop(['PLAY'], axis=1).values
 
     # use all of the data, the validation set will come from unseen data
     gbc = GradientBoostingClassifier()

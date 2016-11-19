@@ -87,7 +87,7 @@
             <tr>
               <td>Weather</td>
               {% if data.record.WEATHER != 'UNKNOWN'  %}
-              <td>{{ data.record.TEMERATURE }} degrees, {{ data.record.HUMIDITY }}% humidity, {{}} mph winds</td>
+              <td>{{ data.record.TEMPERATURE }} degrees, {{ data.record.HUMIDITY }}% humidity, {{ data.record.WINDSPEED  }} mph winds</td>
               {% else %}
               <td>UNKNOWN</td>
               {% endif %}
