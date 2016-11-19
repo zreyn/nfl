@@ -60,6 +60,32 @@ def compute_margin(play):
     else:
         return play['AWAYSCORE'] - play['HOMESCORE']
 
+def join(play, df1, df2):
+    matching_play = df2[
+            (df2['game_id'].str.contains(str(play['GAMEID'])[:8])) &
+            (df2['quarter'] == play['QUARTER']) &
+            (df2['minute'] == play['MINUTE']) &
+            (df2['second'] == play['SECOND']) &
+            (df2['down'] == play['DOWN']) &
+            (df2['yds_to_go'] == play['TOGO']) &
+            (df2['yardlinefixed'] == play['YARDLINEFIXED']) &
+            ~(df2['detail'].str.startswith('Penalty')) &
+            ~(df2['detail'].str.startswith('Timeout')) &
+            (((df2['home_team'] == play['OFFENSETEAM']) & (df2['away_team'] == play['DEFENSETEAM'])) | ((df2['home_team'] == play['DEFENSETEAM']) & (df2['away_team'] == play['OFFENSETEAM'])))
+        ]
+    if len(matching_play.index) == 1:
+        matching_play = matching_play.iloc[0]
+        df1.loc[play.name, 'ISTURF'] = matching_play['isturf']
+        df1.loc[play.name, 'UNDERROOF'] = matching_play['under_roof']
+        df1.loc[play.name, 'WEATHER'] = matching_play['Weather']
+        df1.loc[play.name, 'HOMETEAM'] = matching_play['home_team']
+        df1.loc[play.name, 'AWAYTEAM'] = matching_play['away_team']
+        df1.loc[play.name, 'HOMESCORE'] = matching_play['pbp_score_hm']
+        df1.loc[play.name, 'AWAYSCORE'] = matching_play['pbp_score_aw']
+
+    if play.name%1000 == 0:
+        print play.name, 'of', df1.shape[0]
+
 def add_features(pbp, pbp_pfr):
 
     # add some empty columns to fill
@@ -71,34 +97,12 @@ def add_features(pbp, pbp_pfr):
     pbp['HOMESCORE'] = np.nan
     pbp['AWAYSCORE'] = np.nan
 
-    # for each play in our main dataframe, find the corresponding play in the other
-    for i in xrange(pbp.shape[0]):
-        play = pbp.iloc[i]
-        matching_play = pbp_pfr[
-                (pbp_pfr['game_id'].str.contains(str(play['GAMEID'])[:8])) &
-                (pbp_pfr['quarter'] == play['QUARTER']) &
-                (pbp_pfr['minute'] == play['MINUTE']) &
-                (pbp_pfr['second'] == play['SECOND']) &
-                (pbp_pfr['down'] == play['DOWN']) &
-                (pbp_pfr['yds_to_go'] == play['TOGO']) &
-                (pbp_pfr['yardlinefixed'] == play['YARDLINEFIXED']) &
-                ~(pbp_pfr['detail'].str.startswith('Penalty')) &
-                ~(pbp_pfr['detail'].str.startswith('Timeout')) &
-                (((pbp_pfr['home_team'] == play['OFFENSETEAM']) & (pbp_pfr['away_team'] == play['DEFENSETEAM'])) | ((pbp_pfr['home_team'] == play['DEFENSETEAM']) & (pbp_pfr['away_team'] == play['OFFENSETEAM'])))
-            ]
+    # reset the index so the iloc matches the loc
+    pbp.reset_index(inplace=True)
 
-        if len(matching_play.index) == 1:
-                matching_play = matching_play.iloc[0]
-                pbp.loc[play.name, 'ISTURF'] = matching_play['isturf']
-                pbp.loc[play.name, 'UNDERROOF'] = matching_play['under_roof']
-                pbp.loc[play.name, 'WEATHER'] = matching_play['Weather']
-                pbp.loc[play.name, 'HOMETEAM'] = matching_play['home_team']
-                pbp.loc[play.name, 'AWAYTEAM'] = matching_play['away_team']
-                pbp.loc[play.name, 'HOMESCORE'] = matching_play['pbp_score_hm']
-                pbp.loc[play.name, 'AWAYSCORE'] = matching_play['pbp_score_aw']
-
-        if i%1000 == 0:
-            print (float(i) / pbp.shape[0]) * 100, 'pct'
+    # for each play in our main dataframe, find the corresponding play in the
+    # other and copy the values over
+    pbp_sample.apply(lambda x: join(x, pbp_sample, pbp_pfr), axis=1)
 
     return pbp
 

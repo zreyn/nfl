@@ -88,10 +88,12 @@ function evaluate(event) {
 
 function updateCookie(cname, cvalue) {
   var value = getCookie(cname);
-    if (value != "") {
-        setCookie(cname, cvalue, 7)
+    if (value == "") {
+      setCookie(cname, cvalue, 7);
     } else {
-        setCookie(cname, cvalue+value, 7)
+      var count = parseInt(cvalue);
+      var val = parseInt(value);
+      setCookie(cname, count+val, 7);
     }
 }
 

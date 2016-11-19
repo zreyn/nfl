@@ -60,17 +60,7 @@
 <div class="container theme-showcase" role="main">
 
   <div class="page-header">
-    <ul>
-          <li>UserRight: <script type="text/javascript">document.write(getCookie("UserRight"));</script></li>
-          <li>UserTotal: <script type="text/javascript">document.write(getCookie("UserTotal"));</script></li>
-          <li>ModelRight: <script type="text/javascript">document.write(getCookie("ModelRight"));</script></li>
-          <li>ModelTotal: <script type="text/javascript">document.write(getCookie("ModelTotal"));</script></li>
-        </ul>
-  </div>
-
-
-  <div class="page-header">
-    <h2 class="cover-heading">Pick the Play</h2>
+    <h2 class="cover-heading">Predict the Play</h2>
 
     <div class="panel panel-success">
       <div class="panel-heading">
@@ -203,6 +193,48 @@
             <a href="/" class="btn btn-lg btn-default">Play Again</a>
           </p>
     </div>
+
+    <div class="row">
+      <h2 class="cover-heading">Scoreboard</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <!-- The individual user's accuracy -->
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Your Accuracy</h3>
+            </div>
+            <div class="panel-body" align="center">
+              <p class="lead">
+                <script type="text/javascript">document.write(getCookie("UserRight"));</script>
+                of
+                <script type="text/javascript">document.write(getCookie("UserTotal"));</script>
+                (<script type="text/javascript">document.write( (getCookie("UserRight") / getCookie("UserTotal") * 100).toPrecision(2) );</script>%)
+              </p>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-6">
+
+          <!-- The model's accuracy against this individual -->
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">The Model's Accuracy</h3>
+            </div>
+            <div class="panel-body" id="prediction" align="center">
+              <p class="lead">
+                <script type="text/javascript">document.write(getCookie("ModelRight"));</script>
+                of
+                <script type="text/javascript">document.write(getCookie("ModelTotal"));</script>
+                (<script type="text/javascript">document.write( (getCookie("ModelRight") / getCookie("ModelTotal") * 100).toPrecision(2) );</script>%)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
     <div class="well" id="accuracy"></div>

@@ -4,12 +4,16 @@
 
     <div class="col-md-6">
 
-      <h4 align="center">User Accuracy: {{ '{:04.1f}'.format(data.user_accuracy) }}&#37;</h4>
+      <h4 align="center">Human Accuracy: {{ '{:04.1f}'.format(data.user_accuracy) }}&#37;</h4>
 
-      <table class="table table-bordered" align="center">
+      <table class="table table-condensed" align="center">
         <thead>
           <tr>
-            <th></th>
+            <th colspan="2"></th>
+            <th colspan="2">&larr;Predicted&rarr;</th>
+          </tr>
+          <tr>
+            <th scope="col">Actual &darr;</th>
             <th>Pass</th>
             <th>Rush</th>
             <th>Kick</th>
@@ -17,22 +21,22 @@
         </thead>
         <tbody>
           <tr>
-            <th>Pass</th>
-            <td>{{ data.user_cm[0][0] }}</td>
-            <td>{{ data.user_cm[0][1] }}</td>
-            <td>{{ data.user_cm[0][2] }}</td>
+            <th scope="row">Pass</th>
+            <td class="success">{{ data.user_cm[0][0] }}</td>
+            <td class="danger">{{ data.user_cm[0][1] }}</td>
+            <td class="danger">{{ data.user_cm[0][2] }}</td>
           </tr>
           <tr>
-            <th>Rush</th>
-            <td>{{ data.user_cm[1][0] }}</td>
-            <td>{{ data.user_cm[1][1] }}</td>
-            <td>{{ data.user_cm[1][2] }}</td>
+            <th scope="row">Rush</th>
+            <td class="danger">{{ data.user_cm[1][0] }}</td>
+            <td class="success">{{ data.user_cm[1][1] }}</td>
+            <td class="danger">{{ data.user_cm[1][2] }}</td>
           </tr>
           <tr>
-            <th>Kick</th>
-            <td>{{ data.user_cm[2][0] }}</td>
-            <td>{{ data.user_cm[2][1] }}</td>
-            <td>{{ data.user_cm[2][2] }}</td>
+            <th scope="row">Kick</th>
+            <td class="danger">{{ data.user_cm[2][0] }}</td>
+            <td class="danger">{{ data.user_cm[2][1] }}</td>
+            <td class="success">{{ data.user_cm[2][2] }}</td>
           </tr>
         </tbody>
       </table>
@@ -41,10 +45,14 @@
     <div class="col-md-6">
 
       <h4 align="center">Model Accuracy: {{ '{:04.1f}'.format(data.model_accuracy) }}&#37;</h4>
-      <table class="table table-bordered" align="center">
+      <table class="table table-condensed" align="center">
         <thead>
           <tr>
-            <th></th>
+            <th colspan="2"></th>
+            <th colspan="2">&larr;Predicted&rarr;</th>
+          </tr>
+          <tr>
+            <th scope="col">Actual &darr;</th>
             <th>Pass</th>
             <th>Rush</th>
             <th>Kick</th>
@@ -52,22 +60,22 @@
         </thead>
         <tbody>
           <tr>
-            <th>Pass</th>
-            <td>{{ data.model_cm[0][0] }}</td>
-            <td>{{ data.model_cm[0][1] }}</td>
-            <td>{{ data.model_cm[0][2] }}</td>
+            <th scope="row">Pass</th>
+            <td class="success">{{ data.model_cm[0][0] }}</td>
+            <td class="danger">{{ data.model_cm[0][1] }}</td>
+            <td class="danger">{{ data.model_cm[0][2] }}</td>
           </tr>
           <tr>
-            <th>Rush</th>
-            <td>{{ data.model_cm[1][0] }}</td>
-            <td>{{ data.model_cm[1][1] }}</td>
-            <td>{{ data.model_cm[1][2] }}</td>
+            <th scope="row">Rush</th>
+            <td class="danger">{{ data.model_cm[1][0] }}</td>
+            <td class="success">{{ data.model_cm[1][1] }}</td>
+            <td class="danger">{{ data.model_cm[1][2] }}</td>
           </tr>
           <tr>
-            <th>Kick</th>
-            <td>{{ data.model_cm[2][0] }}</td>
-            <td>{{ data.model_cm[2][1] }}</td>
-            <td>{{ data.model_cm[2][2] }}</td>
+            <th scope="row">Kick</th>
+            <td class="danger">{{ data.model_cm[2][0] }}</td>
+            <td class="danger">{{ data.model_cm[2][1] }}</td>
+            <td class="success">{{ data.model_cm[2][2] }}</td>
           </tr>
         </tbody>
       </table>
