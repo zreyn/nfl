@@ -72,8 +72,8 @@ def add_features(pbp, pbp_pfr):
     pbp['AWAYSCORE'] = np.nan
 
     # for each play in our main dataframe, find the corresponding play in the other
-    for i,row in enumerate(pbp.iterrows()):
-        play = row[1]
+    for i in xrange(pbp.shape[0]):
+        play = pbp.iloc[i]
         matching_play = pbp_pfr[
                 (pbp_pfr['season'] == play['SEASONYEAR']) &
                 (pbp_pfr['quarter'] == play['QUARTER']) &
@@ -87,17 +87,17 @@ def add_features(pbp, pbp_pfr):
             ]
 
         if len(matching_play.index) == 1:
-            matching_play = matching_play.iloc[0]
-            play['ISTURF'] = matching_play['isturf']
-            play['UNDERROOF'] = matching_play['under_roof']
-            play['WEATHER'] = matching_play['Weather']
-            play['HOMETEAM'] = matching_play['home_team']
-            play['AWAYTEAM'] = matching_play['away_team']
-            play['HOMESCORE'] = matching_play['pbp_score_hm']
-            play['AWAYSCORE'] = matching_play['pbp_score_aw']
+                matching_play = matching_play.iloc[0]
+                pbp.loc[play.name, 'ISTURF'] = matching_play['isturf']
+                pbp.loc[play.name, 'UNDERROOF'] = matching_play['under_roof']
+                pbp.loc[play.name, 'WEATHER'] = matching_play['Weather']
+                pbp.loc[play.name, 'HOMETEAM'] = matching_play['home_team']
+                pbp.loc[play.name, 'AWAYTEAM'] = matching_play['away_team']
+                pbp.loc[play.name, 'HOMESCORE'] = matching_play['pbp_score_hm']
+                pbp.loc[play.name, 'AWAYSCORE'] = matching_play['pbp_score_aw']
 
         if i%1000 == 0:
-            print i, 'of', pbp.shape[0]
+            print (float(i) / pbp.shape[0]) * 100, 'pct'
 
     return pbp
 
