@@ -4,56 +4,79 @@ from sklearn.ensemble import GradientBoostingClassifier
 import cPickle as pickle
 import random
 
-columns_to_keep = ['QUARTER', 'MINUTE', 'SECOND', 'DOWN', 'TOGO', 'YARDLINE', 'PLAY']
+columns_to_keep = [
+    'QUARTER',
+    'MINUTE',
+    'SECOND',
+    'DOWN',
+    'TOGO',
+    'YARDLINE',
+    'SCORINGMARGIN',
+    'ISTURF',
+    'UNDERROOF',
+    'ISATHOME',
+    'TEMPERATURE',
+    'HUMIDITY',
+    'WINDSPEED',
+    'PLAY']
 
 formations = [
-'FIELD_GOAL',
-'NO_HUDDLE',
-'NO_HUDDLE_SHOTGUN',
-'PUNT',
-'SHOTGUN',
-'UNDER_CENTER',
-'WILDCAT']
+    'FIELD_GOAL',
+    'NO_HUDDLE',
+    'NO_HUDDLE_SHOTGUN',
+    'PUNT',
+    'SHOTGUN',
+    'UNDER_CENTER',
+    'WILDCAT']
 
 teams = [
-'ARI',
-'ATL',
-'BAL',
-'BUF',
-'CAR',
-'CHI',
-'CIN',
-'CLE',
-'DAL',
-'DEN',
-'DET',
-'GB',
-'HOU',
-'IND',
-'JAX',
-'KC',
-'LA',
-'MIA',
-'MIN',
-'NE',
-'NO',
-'NYG',
-'NYJ',
-'OAK',
-'PHI',
-'PIT',
-'SD',
-'SEA',
-'SF',
-'TB',
-'TEN',
-'WAS']
+    'ARI',
+    'ATL',
+    'BAL',
+    'BUF',
+    'CAR',
+    'CHI',
+    'CIN',
+    'CLE',
+    'DAL',
+    'DEN',
+    'DET',
+    'GB',
+    'HOU',
+    'IND',
+    'JAX',
+    'KC',
+    'LA',
+    'MIA',
+    'MIN',
+    'NE',
+    'NO',
+    'NYG',
+    'NYJ',
+    'OAK',
+    'PHI',
+    'PIT',
+    'SD',
+    'SEA',
+    'SF',
+    'TB',
+    'TEN',
+    'WAS']
 
 def prep_records(records):
     '''
     INPUT: A set of plays as rows in a DataFrame in "clean form"
     OUTPUT: The plays in "model form"
     '''
+
+    # Fill missing values for HUMIDITY, TEMPERATURE, WINDSPEED and convert to int
+    records.TEMPERATURE = records.TEMPERATURE.replace('UNKOWN', '75') # typo in earlier script
+    records.HUMIDITY = records.HUMIDITY.replace('UNKNOWN', '45')
+    records.WINDSPEED = records.WINDSPEED.replace('UNKNOWN', '0')
+    records.WINDSPEED = records.WINDSPEED.replace('wind', '0') # odd parsing from earlier
+    records.TEMPERATURE = records.TEMPERATURE.astype("int")
+    records.HUMIDITY = records.HUMIDITY.astype("int")
+    records.WINDSPEED = records.WINDSPEED.astype("int")
 
     # Dummy the team
     df2 = pd.get_dummies(records.OFFENSETEAM)
