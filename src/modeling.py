@@ -63,9 +63,12 @@ teams = [
     'TEN',
     'WAS']
 
-def prep_records(records):
+def prep_records(records, columns_to_keep=columns_to_keep, offense=True, formation=True):
     '''
-    INPUT: A set of plays as rows in a DataFrame in "clean form"
+    INPUT: records - a set of plays as rows in a DataFrame in "clean form"
+           columns_to_keep - the list of columns to keep in the result
+           offense - True=Dummies for the offense, False=no offense feature
+           formation - True=Dummies for the formation, False=no formation feature
     OUTPUT: The plays in "model form"
     '''
 
@@ -78,23 +81,40 @@ def prep_records(records):
     records.HUMIDITY = records.HUMIDITY.astype("int")
     records.WINDSPEED = records.WINDSPEED.astype("int")
 
+    # Map the class to integer
+    records['PLAY'] = records['PLAY'].map({'KICK':0, 'PASS':1, 'RUSH':2})
+
     # Dummy the team
-    df2 = pd.get_dummies(records.OFFENSETEAM)
-    dummies_frame = pd.get_dummies(teams)
-    df2 = df2.reindex(columns=dummies_frame.columns, fill_value=0)
-    df2.columns = map(lambda x: 'TEAM_' + str(x), df2.columns)
+    if offense:
+        df2 = pd.get_dummies(records.OFFENSETEAM)
+        dummies_frame = pd.get_dummies(teams)
+        df2 = df2.reindex(columns=dummies_frame.columns, fill_value=0)
+        df2.columns = map(lambda x: 'TEAM_' + str(x), df2.columns)
 
     # Dummy the formation
-    df1 = pd.get_dummies(records.FORMATION)
-    dummies_frame = pd.get_dummies(formations)
-    df1 = df1.reindex(columns=dummies_frame.columns, fill_value=0)
-    df1.columns = map(lambda x: 'FORMATION_' + x.replace (' ', '_'), df1.columns)
+    if formation:
+        df1 = pd.get_dummies(records.FORMATION)
+        dummies_frame = pd.get_dummies(formations)
+        df1 = df1.reindex(columns=dummies_frame.columns, fill_value=0)
+        df1.columns = map(lambda x: 'FORMATION_' + x.replace (' ', '_'), df1.columns)
 
     # combine the dummy variables with any other column we're keeping
-    records = pd.concat(
-        [records.ix[:,columns_to_keep],
-        df2,
-        df1], axis=1)
+    if (offense and formation):
+        records = pd.concat(
+            [records.ix[:,columns_to_keep],
+            df2,
+            df1], axis=1)
+    elif offense:
+        records = pd.concat(
+            [records.ix[:,columns_to_keep],
+            df2], axis=1)
+    elif formation:
+        records = pd.concat(
+            [records.ix[:,columns_to_keep],
+            df1], axis=1)
+    else:
+        records = pd.concat(
+            [records.ix[:,columns_to_keep]], axis=1)
 
     return records
 
@@ -122,7 +142,7 @@ if __name__ == '__main__':
     model_name = 'gbc-v4'
 
     # prep the data and create the model
-    model = create_model(prep_records(data))
+    model = create_model(prep_records(data, columns_to_keep))
 
     # save the model
     with open('../data/'+model_name+'.pkl', 'w') as f:

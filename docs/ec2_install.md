@@ -1,6 +1,7 @@
 EC2 Instance:
 ec2-54-186-62-57.us-west-2.compute.amazonaws.com / 54.186.62.57
 Security group allow TCP: 22, 80
+ssh -i ~/.ssh/zgreyn-ds-or.pem ubuntu@ec2-54-186-62-57.us-west-2.compute.amazonaws.com
 
 ---- On EC2 Instance ---
 * git clone https://github.com/zreyn/nfl.git

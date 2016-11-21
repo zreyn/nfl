@@ -101,11 +101,11 @@
             <tr>
               <td>Offense</td>
               {% if data.record.SCORINGMARGIN > 0 %}
-              <td>{{ data.record.OFFENSETEAM }} (up by {{ data.record.SCORINGMARGIN }})</td>
+              <td>{{ data.record.OFFENSETEAM }} (up by {{ '{:02}'.format(data.record.SCORINGMARGIN) }})</td>
               {% elif data.record.SCORINGMARGIN == 0 %}
               <td>{{ data.record.OFFENSETEAM }} (tie score)</td>
               {% else %}
-              <td>{{ data.record.OFFENSETEAM }} (down by {{ -1*data.record.SCORINGMARGIN }})</td>
+              <td>{{ data.record.OFFENSETEAM }} (down by {{ '{:02}'.format(-1*data.record.SCORINGMARGIN) }})</td>
               {% endif%}
             </tr>
             <tr>
@@ -211,7 +211,7 @@
                 <script type="text/javascript">document.write(getCookie("UserRight"));</script>
                 of
                 <script type="text/javascript">document.write(getCookie("UserTotal"));</script>
-                (<script type="text/javascript">document.write( (getCookie("UserRight") / getCookie("UserTotal") * 100).toPrecision(2) );</script>%)
+                (<script type="text/javascript">document.write( Math.round((getCookie("UserRight") / getCookie("UserTotal")) * 100));</script>%)
               </p>
             </div>
           </div>
@@ -229,7 +229,7 @@
                 <script type="text/javascript">document.write(getCookie("ModelRight"));</script>
                 of
                 <script type="text/javascript">document.write(getCookie("ModelTotal"));</script>
-                (<script type="text/javascript">document.write( (getCookie("ModelRight") / getCookie("ModelTotal") * 100).toPrecision(2) );</script>%)
+                (<script type="text/javascript">document.write( Math.round((getCookie("ModelRight") / getCookie("ModelTotal")) * 100));</script>%)
               </p>
             </div>
           </div>
