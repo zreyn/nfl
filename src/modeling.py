@@ -82,7 +82,7 @@ def prep_records(records, columns_to_keep=columns_to_keep, offense=True, formati
     records.WINDSPEED = records.WINDSPEED.astype("int")
 
     # Map the class to integer
-    records['PLAY'] = records['PLAY'].map({'KICK':0, 'PASS':1, 'RUSH':2})
+    records['PLAY'] = records['PLAY'].map({'KICK':0, 'PASS':1, 'RUSH':2, 0:0, 1:1, 2:2})
 
     # Dummy the team
     if offense:
