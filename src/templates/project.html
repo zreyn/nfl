@@ -129,6 +129,8 @@
         <p class="head">However, each of the variations produced results within
           about 1% accuracy of the basic GradientBoostingClassifier. To create
           the final model, I performed a grid search</p>
+        <p class="head">The final model produced the following feature importances:</p>
+        <img src="https://s3-us-west-2.amazonaws.com/galvanize-zgreyn/feature-importances-gbc-adj.png" class="img-responsive center-block">
       </div>
     </div>
 
@@ -145,7 +147,10 @@
         <p class="head">While I have no NFL Defensive Coordinators on hand to
           compete against the model, I had several Monday morning quarterbacks
           compete aginst the model. Human accuracy tends to hover around the
-          65-70% range while the model accuracy tends to converge on 76%.</p>
+          65-70% range while the model accuracy will to converge on 76.1% for
+          the validation set.  The confusion matrix is below:
+        </p>
+        <img src="https://s3-us-west-2.amazonaws.com/galvanize-zgreyn/validation-cm.png" class="img-responsive center-block">
       </div>
     </div>
 
