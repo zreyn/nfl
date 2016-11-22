@@ -58,19 +58,106 @@
 
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title">Modeling</h3>
+        <h3 class="panel-title">The Problem</h3>
       </div>
       <div class="panel-body">
-        <a href="https://github.com/zreyn/nfl">GitHub Repo</a>
+        <p class="head">From the perspective of an NFL Defensive Coordinator,
+          having an instant data-driven prediction of what play the opposing
+          offense will run is extremely valuable. Knowing what play is coming
+          can influence which defensive personnel to have on the field and in
+          which coverage. Most of the prior art in this domain is dedicated to
+          predicting the outcomes of games instead of individual plays.</p>
       </div>
     </div>
 
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title">For Fun</h3>
+        <h3 class="panel-title">The Data</h3>
       </div>
       <div class="panel-body">
-        <a href="https://youtu.be/vtaE5RznuGw?t=34s">Sports Night's Play Prediction</a>
+        <p class="head">I gathered NFL play data over the course of the 2013-2016
+          seasons from NFLSavant.com and from Pro-Football-Reference.com.</p>
+        <p class="head">Since the play data is not specific to predicting
+          offensive plays, it includes many extraneous columns and rows.  For
+          example, the data includes plays that never began due to timeouts or
+          penalties such as false starts, encroachment, or delay of game.  So,
+          I created scripts to clean and transform the data, which can be found
+          in the repo.</p>
+        <p class="head">Merging the two data sources revealed 4 plays where the
+          data from Pro-Football-Reference was erroneous, so those plays were
+          discarded.  Additionally, several games (totaling 333 plays) were not
+          properly scraped from Pro-Football-Reference, so they were also
+          discarded from the final data.  It's possible a rescraping could
+          recover these plays.</p>
+        <p class="head">The final cleaned data contains a total of 121,525
+          offensive plays run from 2013 - Wk 10 2016 and has 33 features.  This
+          data was split into a training and validation set containing 109,372
+          and 12,153 plays respectively.</p>
+      </div>
+    </div>
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Modeling</h3>
+      </div>
+      <div class="panel-body">
+        <p class="head">The cleaned data is in human-friendly form, which
+          includes categorical features such as the teams and formation, some
+          redundant columns, and missing values.  However, scikitlearn's
+          classifiers require additional data preparation to ensure all values
+          are present and numeric.  Categorical variables were dummied, redundant
+          columns dropped, and missing values filled.</p>
+        <p class="head">Given these features, I built models to predict the
+          result of the play.  To select a model, I evaluated a number of
+          classifiers: kNN, SVM, Decision Tree, Random Forest, Neural Net, AdaBoost,
+          Naive Bayes, QDA, Gradient Boosting, and Logistic Regression.  Based on
+          the results, I selected the GradientBoostingClassifier, which was
+          consistently the most accurate.</p>
+        <p class="head">While there are hundreds of thousands of plays executed
+          during each NFL season, the amount of data per offense and situation
+          is limited, so the data's density is low. In addition, the players and
+          play callers for offenses change year over year and even week to week,
+          making historical data less pertinent to predicting upcoming plays. As
+          such, I conducted a number of feature engineering experiments such as:
+          <ul>
+            <li>Including vs excluding offense team, defense team, season</li>
+            <li>Including vs excluding score, weather, formation</li>
+            <li>Stacking a "general wisdom" (not year or offense specific) model,
+              which provided log-odds of RUSH, PASS, KICK as features to the final
+              model</li>
+          </ul></p>
+        <p class="head">However, each of the variations produced results within
+          about 1% accuracy of the basic GradientBoostingClassifier. To create
+          the final model, I performed a grid search</p>
+      </div>
+    </div>
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Evaluation</h3>
+      </div>
+      <div class="panel-body">
+        <p class="head">Beyond the cross-validation scores and accuracy on the
+          validation set, the quality of the model will be evaluated based on
+          its performance against two competing models: 1) NFL offenses typical
+          pass 57% of the time, so a naive model always guessing pass will be
+          right 57% of the time.  2) Humans, given the same information.</p>
+        <p class="head">While I have no NFL Defensive Coordinators on hand to
+          compete against the model, I had several Monday morning quarterbacks
+          compete aginst the model. Human accuracy tends to hover around the
+          65-70% range while the model accuracy tends to converge on 76%.</p>
+      </div>
+    </div>
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Links</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+          <li><a href="https://github.com/zreyn/nfl">GitHub Repo</a></li>
+          <li><a href="https://youtu.be/vtaE5RznuGw?t=34s">Sports Night's Play Prediction</a></li>
+        </ul>
       </div>
     </div>
 
