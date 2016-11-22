@@ -158,7 +158,7 @@ To use the final model I built:
 
 Beyond the cross-validation scores and accuracy on the validation set, the quality of the model will be evaluated based on its performance against two competing models: 1) NFL offenses typical pass 57% of the time, so a naive model always guessing pass will be right 57% of the time.  2) Humans, given the same information.
 
-While I have no NFL Defensive Coordinators on hand to compete against the model, I had several Monday morning quarterbacks compete aginst the model.  Human accuracy tends to hover around the 65-70% range while the model accuracy tends to converge on 76%.  
+While I have no NFL Defensive Coordinators on hand to compete against the model, I had several Monday morning quarterbacks compete aginst the model.  Human accuracy tends to hover between 62-72% while the model accuracy will converge on 76.1% on the validation set.  
 
 
 ### Deployment

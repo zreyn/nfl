@@ -36,11 +36,11 @@ GLOBALS
 app = Flask(__name__)
 
 # load the current model
-with open('data/gbc-v5.pkl', 'r') as f:
+with open('data/gbc-v6.pkl', 'r') as f:
     model = pickle.load(f)
 
 # set the model version
-model_version = 'gbc-v5'
+model_version = 'gbc-v6'
 
 # for now, just use a file to store confusion matrices
 user_cm_file = 'data/user_cm.csv'
