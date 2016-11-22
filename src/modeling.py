@@ -18,6 +18,7 @@ columns_to_keep = [
     'TEMPERATURE',
     'HUMIDITY',
     'WINDSPEED',
+    'SEASONYEAR',
     'PLAY']
 
 formations = [

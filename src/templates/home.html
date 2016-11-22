@@ -101,11 +101,11 @@
             <tr>
               <td>Offense</td>
               {% if data.record.SCORINGMARGIN > 0 %}
-              <td>{{ data.record.OFFENSETEAM }} (up by {{ '{:02}'.format(data.record.SCORINGMARGIN) }})</td>
+              <td>{{ data.record.OFFENSETEAM }} (up by {{ data.record.SCORINGMARGIN|int }})</td>
               {% elif data.record.SCORINGMARGIN == 0 %}
               <td>{{ data.record.OFFENSETEAM }} (tie score)</td>
               {% else %}
-              <td>{{ data.record.OFFENSETEAM }} (down by {{ '{:02}'.format(-1*data.record.SCORINGMARGIN) }})</td>
+              <td>{{ data.record.OFFENSETEAM }} (down by {{ (-1*data.record.SCORINGMARGIN)|int }})</td>
               {% endif%}
             </tr>
             <tr>

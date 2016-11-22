@@ -36,11 +36,11 @@ GLOBALS
 app = Flask(__name__)
 
 # load the current model
-with open('data/gbc-v4.pkl', 'r') as f:
+with open('data/gbc-v5.pkl', 'r') as f:
     model = pickle.load(f)
 
 # set the model version
-model_version = 'gbc-v4'
+model_version = 'gbc-v5'
 
 # for now, just use a file to store confusion matrices
 user_cm_file = 'data/user_cm.csv'
@@ -49,24 +49,6 @@ cm_index_dict = {'PASS':0, 'RUSH':1, 'KICK':2}
 
 # filename where the data is located
 data_filename = 'data/pbp-validation.csv'
-
-# which columns to keep
-columns_to_keep = [
-    'QUARTER',
-    'MINUTE',
-    'SECOND',
-    'DOWN',
-    'TOGO',
-    'YARDLINE',
-    'SCORINGMARGIN',
-    #'ISTURF',
-    #'UNDERROOF',
-    #'ISATHOME',
-    'TEMPERATURE',
-    'HUMIDITY',
-    'WINDSPEED',
-    'SEASONYEAR',
-    'PLAY']
 
 '''
 ==================================
@@ -81,7 +63,7 @@ def get_a_play():
 def predict(record):
 
     # prep the record for the model
-    record_prepped = prep_records(pd.DataFrame(record).T, columns_to_keep=columns_to_keep, offense=False, formation=False)
+    record_prepped = prep_records(pd.DataFrame(record).T)
 
     # split the class from the features
     y_one = record_prepped['PLAY']
@@ -219,4 +201,4 @@ if __name__ == '__main__':
     user_cm, model_cm = create_confusion_matrices()
 
     # run the app
-    app.run(host='0.0.0.0', port=8080, debug=False)
+    app.run(host='0.0.0.0', port=80, debug=False)
