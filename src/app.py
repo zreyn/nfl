@@ -46,6 +46,7 @@ model_version = 'gbc-v5'
 user_cm_file = 'data/user_cm.csv'
 model_cm_file = 'data/model_cm.csv'
 cm_index_dict = {'PASS':0, 'RUSH':1, 'KICK':2}
+pred_dict = {1:'PASS', 2:'RUSH', 0:'KICK'}
 
 # filename where the data is located
 data_filename = 'data/pbp-validation.csv'
@@ -114,7 +115,7 @@ def home_page():
     data = {}
     data['record'] = record
     data['probas'] = probas[0]
-    data['play_pred'] = play_pred[0]
+    data['play_pred'] =  pred_dict[play_pred[0]]
 
     # pass the records to the template and render it
     return render_template('home.html', data=data)
