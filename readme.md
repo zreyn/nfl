@@ -153,14 +153,19 @@ To build the selected model:
 To use the final model I built:
 1. Unpickle data/gbc-v6.pkl
 
+
 ### Evaluation
 
-We can evaluate the performance of the models in two ways. 1) Split off a validation set of randomly selected plays throughout the data set.  Cross-validation and tuning will be performed on the training set and the generalization measured on the validation set.  2) Use previous seasons data as the training set and evaluate on plays run in the current season.  Ultimately, we want to know how it will perform "live" during games. NFL offenses typical pass 57% of the time, so the model must show at least a 10% improvement to be effective.
+Beyond the cross-validation scores and accuracy on the validation set, the quality of the model will be evaluated based on its performance against two competing models: 1) NFL offenses typical pass 57% of the time, so a naive model always guessing pass will be right 57% of the time.  2) Humans, given the same information.
+
+While I have no NFL Defensive Coordinators on hand to compete against the model, I had several Monday morning quarterbacks compete aginst the model.  Human accuracy tends to hover around the 65-70% range while the model accuracy tends to converge on 76%.  
 
 
 ### Deployment
 
-The user interface presents the user with a situation as if they are a defense (clock, team, yard line, formation); they will choose what to defend (short/long pass, run, kick, etc.).  The model will also make a prediction, but that is shown to the user after they have made their own prediction. The ground truth will be displayed and both predictions evaluated.  Compete against the model!
+I created a user inteface that loads the validation set, held out from training and tuning.  It presents the user with a randomly selected play from that validation set.  The user is presented with the situation as if they are a defense (the cleaned features); they choose whether to defend the pass, the rush, or a kick.  The model will also make a prediction, but that is only shown to the user after they have made their own prediction. The ground truth will be displayed and both predictions evaluated.  The user's individual performance against the model is tracked via browser cookie and the aggregated user performance is tracked and displayed as confusion matrices.
+
+The final UI was uploaded to an EC2 instance to serve traffic.
 
 To run:
 1. Make sure you've produced the clean data and built the model.
