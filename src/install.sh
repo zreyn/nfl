@@ -1,6 +1,7 @@
 sudo apt-get update
 sudo apt-get install python-setuptools python-dev build-essential
 sudo apt-get install python-pip
+#sudo apt-get install nginx
 sudo apt-get install tmux
 sudo pip install --upgrade pip
 sudo pip install requests
