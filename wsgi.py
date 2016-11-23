@@ -1,4 +1,4 @@
-from src.app import app
+from src.app import nfl
 
 if __name__ == "__main__":
-    app.run()
+    nfl.run()

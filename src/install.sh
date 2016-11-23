@@ -19,6 +19,7 @@ source nflenv/bin/activate
 pip install scipy scikit-learn pandas numpy requests Flask
 deactivate
 
-sudo cp app.conf /etc/init/.
-
+sudo cp nfl.conf /etc/init/.
+sudo cp nfl_nginx /etc/nginx/sites-available/nfl
+sudo ln -s /etc/nginx/sites-available/nfl /etc/nginx/sites-enabled
 
