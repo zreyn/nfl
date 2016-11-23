@@ -25,6 +25,7 @@ import time
 import datetime
 import copy
 import random
+import os
 
 
 '''
@@ -36,7 +37,8 @@ GLOBALS
 app = Flask(__name__)
 
 # load the current model
-with open('data/gbc-v6.pkl', 'r') as f:
+model_filename = os.path.join(os.path.dirname(__file__), '../data/gbc-v6.pkl')
+with open(model_filename, 'r') as f:
     model = pickle.load(f)
 
 # set the model version
