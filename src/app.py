@@ -202,4 +202,4 @@ If this is kicked from the command-line, run the server
 if __name__ == '__main__':
 
     # run the app
-    nfl.run(host='0.0.0.0', port=80, debug=False)
+    nfl.run(host='0.0.0.0', port=8000, debug=False)

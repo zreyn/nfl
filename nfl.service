@@ -1,0 +1,12 @@
+[Unit]
+Description=Job that runs the nfl app
+
+[Service]
+Environment=PATH=/home/user/nfl/nflenv/bin
+WorkingDirectory=/home/ubuntu/nfl
+ExecStart=/usr/local/bin/uwsgi --ini nfl.ini
+User=ubuntu
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target
