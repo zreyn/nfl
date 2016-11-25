@@ -25,31 +25,7 @@ import time
 import datetime
 import copy
 import random
-
-
-'''
-==================================
-GLOBALS
-==================================
-'''
-# register this as 'app'
-app = Flask(__name__)
-
-# load the current model
-with open('data/gbc-v6.pkl', 'r') as f:
-    model = pickle.load(f)
-
-# set the model version
-model_version = 'gbc-v6'
-
-# for now, just use a file to store confusion matrices
-user_cm_file = 'data/user_cm.csv'
-model_cm_file = 'data/model_cm.csv'
-cm_index_dict = {'PASS':0, 'RUSH':1, 'KICK':2}
-pred_dict = {1:'PASS', 2:'RUSH', 0:'KICK'}
-
-# filename where the data is located
-data_filename = 'data/pbp-validation.csv'
+import os
 
 '''
 ==================================
@@ -99,13 +75,43 @@ def compute_accuracy(cm):
     else:
         return num_right / cm.sum()
 
+
+'''
+==================================
+GLOBALS
+==================================
+'''
+# register this as 'app'
+nfl = Flask(__name__)
+
+# load the current model
+model_filename = os.path.join(os.path.dirname(__file__), '../data/gbc-v6.pkl')
+with open(model_filename, 'r') as f:
+    model = pickle.load(f)
+
+# set the model version
+model_version = 'gbc-v6'
+
+# for now, just use a file to store confusion matrices
+user_cm_file = os.path.join(os.path.dirname(__file__), '../data/user_cm.csv')
+model_cm_file = os.path.join(os.path.dirname(__file__), '../data/model_cm.csv')
+cm_index_dict = {'PASS':0, 'RUSH':1, 'KICK':2}
+pred_dict = {1:'PASS', 2:'RUSH', 0:'KICK'}
+user_cm, model_cm = create_confusion_matrices()
+
+# read in the cleaned data
+data_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-validation.csv')
+pbp = pd.read_csv(data_filename)
+
+
+
 '''
 ==================================
 Flask methods
 ==================================
 '''
 # home page
-@app.route('/')
+@nfl.route('/')
 def home_page():
 
     record = get_a_play()
@@ -121,7 +127,7 @@ def home_page():
     return render_template('home.html', data=data)
 
 # about the author page
-@app.route('/author')
+@nfl.route('/author')
 def author_page():
 
     data = {}
@@ -130,7 +136,7 @@ def author_page():
     return render_template('author.html', data=data)
 
 # about the project page
-@app.route('/project')
+@nfl.route('/project')
 def project_page():
 
     data = {}
@@ -139,7 +145,7 @@ def project_page():
     return render_template('project.html', data=data)
 
 # about the author page
-@app.route('/field')
+@nfl.route('/field')
 def field():
 
     data = {}
@@ -149,7 +155,7 @@ def field():
 
 
 # get just the confusion matrices
-@app.route('/get_accuracy')
+@nfl.route('/get_accuracy')
 def get_accuracy():
 
     # prep the data for the template
@@ -166,7 +172,7 @@ def get_accuracy():
 
 # Log the user guesses.  Test with:
 # curl -H "Content-Type: application/json" -X POST -d '@src/static/example.json' http://localhost:8080/guess
-@app.route('/guess', methods=['POST'])
+@nfl.route('/guess', methods=['POST'])
 def guess():
 
     # pull the request data
@@ -195,11 +201,5 @@ If this is kicked from the command-line, run the server
 '''
 if __name__ == '__main__':
 
-    # read in the cleaned data
-    pbp = pd.read_csv(data_filename)
-
-    # read in the confusion matrix data
-    user_cm, model_cm = create_confusion_matrices()
-
     # run the app
-    app.run(host='0.0.0.0', port=80, debug=False)
+    nfl.run(host='0.0.0.0', port=8000, debug=False)
