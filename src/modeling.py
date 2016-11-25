@@ -5,6 +5,7 @@ import cPickle as pickle
 import random
 
 columns_to_keep = [
+    #'CLOCK',
     'QUARTER',
     'MINUTE',
     'SECOND',
@@ -85,6 +86,9 @@ def prep_records(records, columns_to_keep=columns_to_keep, offense=True, formati
     # Map the class to integer
     records['PLAY'] = records['PLAY'].map({'KICK':0, 'PASS':1, 'RUSH':2, 0:0, 1:1, 2:2})
 
+    # Convert the game clock to absolute seconds left in game
+    #records['CLOCK'] = 3600 - 900*records['QUARTER'] - 60*records['MINUTE'] - records['SECOND']
+
     # Dummy the team
     if offense:
         df2 = pd.get_dummies(records.OFFENSETEAM)
@@ -126,7 +130,7 @@ def create_model(df_prepped):
     X = df_prepped.drop(['PLAY'], axis=1).values
 
     # use all of the data, the validation set will come from unseen data
-    gbc = GradientBoostingClassifier(learning_rate=0.1, n_estimators=100, 
+    gbc = GradientBoostingClassifier(learning_rate=0.1, n_estimators=100,
         subsample=1.0, min_samples_leaf=20, max_depth=3, random_state=22,
         max_features=1.0)
     gbc.fit(X, y)
