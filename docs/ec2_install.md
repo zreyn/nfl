@@ -11,4 +11,4 @@ ssh -i ~/.ssh/zgreyn-ds-or.pem ubuntu@ec2-54-186-62-57.us-west-2.compute.amazona
 * modify ip address in src/app.py
 * sudo python src/app.py   
 
-Note: this sudo is a really bad idea.  It's required to bind port 80, but we need to proxy Flask from EngineX.
+Note: this sudo is a really bad idea.  It's required to bind port 80, but we need to proxy Flask from NginX.

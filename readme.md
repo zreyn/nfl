@@ -7,6 +7,9 @@ Date: November 2016
 
 From the perspective of an NFL Defensive Coordinator, having an instant data-driven prediction of what play the opposing offense will run is extremely valuable.  Knowing what play is coming can influence which defensive personnel to have on the field and in which coverage.   Most of the prior art in this domain is dedicated to predicting the outcomes of games instead of individual plays.
 
+NFL teams generally follow a pattern, with slight variations from team to team.  For example, the selection of passing plays by team and down:
+![alt text](https://s3-us-west-2.amazonaws.com/galvanize-zgreyn/nfl-passpct.png "Pass Percentage by Down and Team")
+
 
 ### Data
 
@@ -119,7 +122,7 @@ The features available to the models are:
 * FORMATION_UNDER_CENTER      - int64
 * FORMATION_WILDCAT           - uint8
 
-Given these features, I built models to predict the result of the play.  To select a model, I evaluated a number of classifiers:
+Given these features, I built models to predict the result of the play.  To narrow down the final model, I evaluated a number of classifiers:
 * Nearest Neighbors : (0.61435390946502055, 0.61175918336192536, 0.61435390946502055)
 * Linear SVM : (0.75845267489711932, 0.76109746949409385, 0.75845267489711932)
 * Decision Tree : (0.76111934156378602, 0.76084891169251845, 0.76111934156378602)
@@ -137,7 +140,7 @@ While there are hundreds of thousands of plays executed during each NFL season, 
 
 * Including vs excluding offense team, defense team, season
 * Including vs excluding score, weather, formation
-* Stacking a "general wisdom" (not year or offense specific) model, which provided log-odds of RUSH, PASS, KICK as features to the final model
+* Stacking a "general wisdom" (using only clock, down, yards to go, and yardline) neural network, which provided probability of RUSH, PASS, KICK as features to the final gradient boosting model.  
 
 However, each of the variations produced results within about 1% accuracy of the basic GradientBoostingClassifier.  To create the final model, I performed a grid search
 
@@ -156,17 +159,29 @@ To use the final model I built:
 
 ### Evaluation
 
-Beyond the cross-validation scores and accuracy on the validation set, the quality of the model will be evaluated based on its performance against two competing models: 1) NFL offenses typical pass 57% of the time, so a naive model always guessing pass will be right 57% of the time.  2) Humans, given the same information.
+Beyond the cross-validation scores and accuracy on the validation set, the quality of the model will be evaluated based on its performance against two competing models: 1) NFL offenses typically pass 57% of the time, so a naive model always guessing pass will be right 57% of the time.  2) Humans, given the same information.
 
-While I have no NFL Defensive Coordinators on hand to compete against the model, I had several Monday morning quarterbacks compete aginst the model.  Human accuracy tends to hover between 62-72% while the model accuracy will converge on 76.1% on the validation set.  
+While I have no NFL Defensive Coordinators on hand to compete against the model, I had several Monday morning quarterbacks compete aginst the model.  Human accuracy tends to hover between 62-72% while the model accuracy will converge on 76.1% on the validation set.  Below is the confusion matrix and relative feature importances:
 
+![alt text](https://s3-us-west-2.amazonaws.com/galvanize-zgreyn/validation-cm.png "Confusion Matrix on Validation Set")
+![alt text](https://s3-us-west-2.amazonaws.com/galvanize-zgreyn/feature-importances-gbc-adj.png "Feature Importances")
+
+Fun fact: If an offense breaks a huddle and lines up in the shotgun, they throw it 4/5 (80%)of the time.
 
 ### Deployment
 
-I created a user inteface that loads the validation set, held out from training and tuning.  It presents the user with a randomly selected play from that validation set.  The user is presented with the situation as if they are a defense (the cleaned features); they choose whether to defend the pass, the rush, or a kick.  The model will also make a prediction, but that is only shown to the user after they have made their own prediction. The ground truth will be displayed and both predictions evaluated.  The user's individual performance against the model is tracked via browser cookie and the aggregated user performance is tracked and displayed as confusion matrices.
+I created a user interface that loads the validation set, held out from training and tuning.  It presents the user with a randomly selected play from that validation set.  The user is presented with the situation as if they are a defense (the cleaned features); they choose whether to defend the pass, the rush, or a kick.  The model will also make a prediction, but that is only shown to the user after they have made their own prediction. The ground truth will be displayed and both predictions evaluated.  The user's individual performance against the model is tracked via browser cookie and the aggregated user performance is tracked and displayed as confusion matrices.
 
 The final UI was uploaded to an EC2 instance to serve traffic.
 
 To run:
 1. Make sure you've produced the clean data and built the model.
 2. Run src/app.py
+
+
+### Future Work
+* Hook up a real-time data source and put it in a mobile app!
+* Add more granular classes (rush direction, pass direction and distance)
+* Rare plays are overlooked (imbalanced classes); add bootstrapping.  For example, there was a fake punt (Saints @ Cowboys wk4 2016), but it wasn't in the training set.  Thus, the model doesn't ever expect a fake punt.  There was a fake field goal in the training set, so it registers as a low probability.
+* Gather what features humans took into account when they got it right and the model got it wrong
+* Draw a picture of a field instead of just showing text
