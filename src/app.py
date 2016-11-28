@@ -33,6 +33,20 @@ HELPER FUNCTIONS
 ==================================
 '''
 
+def get_superbowl_play():
+    sb_play = pd.read_csv(os.path.join(os.path.dirname(__file__), '../data/superbowlplay.csv'))
+    record_prepped = prep_records(sb_play)
+
+    # split the class from the features
+    y_one = record_prepped['PLAY']
+    X_one = record_prepped.drop(['PLAY'], axis=1).values
+
+    # run a predict and predict_proba to get the class and probabilities
+    play_pred = model.predict(X_one)
+    probas = model.predict_proba(X_one)
+
+    return sb_play, play_pred, probas
+
 def get_a_play():
     # grab a random record and prep it
     return pbp.iloc[random.randint(0, pbp.shape[0])].copy()
@@ -144,7 +158,22 @@ def project_page():
     # pass the records to the template and render it
     return render_template('project.html', data=data)
 
-# about the author page
+# home page
+@nfl.route('/superbowl')
+def superbowl_page():
+
+    record, play_pred, probas = get_superbowl_play()
+
+    # prep the data for the template
+    data = {}
+    data['record'] = record
+    data['probas'] = probas[0]
+    data['play_pred'] =  pred_dict[play_pred[0]]
+
+    # pass the records to the template and render it
+    return render_template('home.html', data=data)
+
+# attempt to draw a field
 @nfl.route('/field')
 def field():
 
