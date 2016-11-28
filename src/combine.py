@@ -1,12 +1,14 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
+import os
 
 def combine(filenames):
 
     dfs = []
     for filename in filenames:
-        dfs.append(pd.read_csv(filename))
+        rel_filename = os.path.join(os.path.dirname(__file__), filename)
+        dfs.append(pd.read_csv(rel_filename))
 
     df = pd.concat(dfs)
 
@@ -137,7 +139,7 @@ if __name__ == '__main__':
     # additional cleanup to get the data; we want the dataframe to look
     # user-friendly for presentation on the UI.  dummy variables and other
     # transformations should go in the modeling.py module.
-    pbp_pfr = pd.read_csv('../data/pbp-pfr.csv')
+    pbp_pfr = pd.read_csv(os.path.join(os.path.dirname(__file__), '../data/pbp-pfr.csv'))
     pbp = add_features(pbp, pbp_pfr) # this takes ~5 hours right now
     pbp = reclean(pbp)
 
@@ -146,5 +148,5 @@ if __name__ == '__main__':
     pbp_train, pbp_validation = train_test_split(pbp, test_size = 0.1, random_state=22)
 
     # save the files
-    pbp_train.to_csv('../data/pbp-training.csv', index=False)
-    pbp_validation.to_csv('../data/pbp-validation.csv', index=False)
+    pbp_train.to_csv(os.path.join(os.path.dirname(__file__), '../data/pbp-training.csv'), index=False)
+    pbp_validation.to_csv(os.path.join(os.path.dirname(__file__), '../data/pbp-validation.csv'), index=False)

@@ -7,7 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
-
+import os
 
 '''
 This script goes out and scrapes a second site for additional features.  High
@@ -344,4 +344,4 @@ def main(output_filename):
     pbp_pfr.to_csv(output_filename, index=False)
 
 if __name__ == '__main__':
-    main('../data/pbp-pfr.csv')
+    main(os.path.join(os.path.dirname(__file__),'../data/pbp-pfr.csv'))

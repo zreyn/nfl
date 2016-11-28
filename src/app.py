@@ -85,12 +85,12 @@ GLOBALS
 nfl = Flask(__name__)
 
 # load the current model
-model_filename = os.path.join(os.path.dirname(__file__), '../data/gbc-v6.pkl')
+model_filename = os.path.join(os.path.dirname(__file__), '../data/gbc-v7.pkl')
 with open(model_filename, 'r') as f:
     model = pickle.load(f)
 
 # set the model version
-model_version = 'gbc-v6'
+model_version = 'gbc-v7'
 
 # for now, just use a file to store confusion matrices
 user_cm_file = os.path.join(os.path.dirname(__file__), '../data/user_cm.csv')

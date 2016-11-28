@@ -3,12 +3,13 @@ import numpy as np
 from sklearn.ensemble import GradientBoostingClassifier
 import cPickle as pickle
 import random
+import os
 
 columns_to_keep = [
-    #'CLOCK',
-    'QUARTER',
-    'MINUTE',
-    'SECOND',
+    'CLOCK',
+    #'QUARTER',
+    #'MINUTE',
+    #'SECOND',
     'DOWN',
     'TOGO',
     'YARDLINE',
@@ -87,7 +88,7 @@ def prep_records(records, columns_to_keep=columns_to_keep, offense=True, formati
     records['PLAY'] = records['PLAY'].map({'KICK':0, 'PASS':1, 'RUSH':2, 0:0, 1:1, 2:2})
 
     # Convert the game clock to absolute seconds left in game
-    #records['CLOCK'] = 3600 - 900*records['QUARTER'] - 60*records['MINUTE'] - records['SECOND']
+    records['CLOCK'] = 3600 - 900*records['QUARTER'] - 60*records['MINUTE'] - records['SECOND']
 
     # Dummy the team
     if offense:
@@ -143,14 +144,16 @@ def read_data(filename):
 if __name__ == '__main__':
 
     # read in the prepped data
-    data = read_data('../data/pbp-training.csv')
+    data_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-training.csv')
+    data = read_data(data_filename)
 
     # name the model
-    model_name = 'gbc-v4'
+    model_name = 'gbc-v7'
 
     # prep the data and create the model
     model = create_model(prep_records(data, columns_to_keep))
 
     # save the model
-    with open('../data/'+model_name+'.pkl', 'w') as f:
+    model_filename = os.path.join(os.path.dirname(__file__), '../data/'+model_name+'.pkl')
+    with open(model_filename, 'w') as f:
         pickle.dump(model, f)

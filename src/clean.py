@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 
 def remove_inner_quotes(infile, outfile):
     with open(outfile, 'wt') as fout:
@@ -146,9 +147,20 @@ def clean(filename):
 if __name__ == '__main__':
 
     # the 2013 data has some stray escaped quotes (\") that confuse pandas
-    remove_inner_quotes('data/pbp-2013.csv', 'data/pbp-2013-fixed.csv')
+    raw_2013_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-2013.csv')
+    fixed_2013_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-2013-fixed.csv')
+    remove_inner_quotes(raw_2013_filename, fixed_2013_filename)
 
-    clean('data/pbp-2016.csv').to_csv('data/pbp2016-clean.csv', index=False)
-    clean('data/pbp-2015.csv').to_csv('data/pbp2015-clean.csv', index=False)
-    clean('data/pbp-2014.csv').to_csv('data/pbp2014-clean.csv', index=False)
-    clean('data/pbp-2013-fixed.csv').to_csv('data/pbp2013-clean.csv', index=False)
+    raw_2016_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-2016.csv')
+    raw_2015_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-2015.csv')
+    raw_2014_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-2014.csv')
+
+    clean_2016_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-2016.csv')
+    clean_2015_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-2015.csv')
+    clean_2014_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-2014.csv')
+    clean_2013_filename = os.path.join(os.path.dirname(__file__), '../data/pbp-2013.csv')
+
+    clean(raw_2016_filename).to_csv(clean_2013_filename, index=False)
+    clean(raw_2015_filename).to_csv(clean_2014_filename, index=False)
+    clean(raw_2014_filename).to_csv(clean_2015_filename, index=False)
+    clean(fixed_2013_filename).to_csv(clean_2013_filename, index=False)
