@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Predict the Play</title>
+  <meta name="description" content="Predict the Play">
+  <meta name="author" content="Zane Reynolds">
+
+  <script type="text/javascript"
+  src="{{ url_for('static', filename='jquery.js') }}">
+  </script>
+  <script type="text/javascript"
+  src="{{ url_for('static', filename='app.js') }}">
+  </script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" type="text/css"
+  href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+  <!-- Custom feel CSS -->
+  <!--
+  <link rel="stylesheet" type="text/css"
+  href="{{ url_for('static', filename='css/cover.css') }}">
+-->
+
+</head>
+
+<body>
+
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">Predict the Play</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/project">Project</a></li>
+          <li><a href="/author">Author</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+
+  <!-- Spacer -->
+  <div class="page-header"><p></p></div>
+
+
+  <!-- Main container -->
+  <div class="container theme-showcase" role="main">
+
+    <div class="page-header">
+      <h2 class="cover-heading">SEA vs NE Superbowl XLIX Interception Play</h2>
+
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">Situation</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>Game</td>
+                  <td>{{ data.record.AWAYTEAM }} @ {{ data.record.HOMETEAM }} ({{ data.record.GAMEDATE}})</td>
+                </tr>
+                <tr>
+                  <td>Weather</td>
+                  {% if data.record.WEATHER != 'UNKNOWN'  %}
+                  <td>{{ data.record.TEMPERATURE }} degrees, {{ data.record.HUMIDITY }}% humidity, {{ data.record.WINDSPEED  }} mph winds</td>
+                  {% else %}
+                  <td>Unknown (or indoors)</td>
+                  {% endif %}
+                </tr>
+                <tr>
+                  <td>Roof</td>
+                  {% if data.record.UNDERROOF == 1  %}
+                  <td>Indoors</td>
+                  {% else %}
+                  <td>Outdoors</td>
+                  {% endif %}
+                </tr>
+                <tr>
+                  <td>Playing Surface</td>
+                  {% if data.record.ISTURF == 1  %}
+                  <td>Turf</td>
+                  {% else %}
+                  <td>Grass</td>
+                  {% endif %}
+                </tr>
+                <tr>
+                  <td>Offense</td>
+                  {% if data.record.SCORINGMARGIN > 0 %}
+                  <td>{{ data.record.OFFENSETEAM }} (up by {{ data.record.SCORINGMARGIN|int }})</td>
+                  {% elif data.record.SCORINGMARGIN == 0 %}
+                  <td>{{ data.record.OFFENSETEAM }} (tie score)</td>
+                  {% else %}
+                  <td>{{ data.record.OFFENSETEAM }} (down by {{ (-1*data.record.SCORINGMARGIN)|int }})</td>
+                  {% endif%}
+                </tr>
+                <tr>
+                  <td>Time</td>
+                  <td>Q{{ data.record.QUARTER }} {{ '{:02}'.format(data.record.MINUTE) }}:{{ '{:02}'.format(data.record.SECOND) }}</td>
+                </tr>
+                <tr>
+                  <td>Down</td>
+                  <td>{{ data.record.DOWN }} and {{ data.record.TOGO }} on the {{ data.record.YARDLINEDIRECTION }} {{ data.record.YARDLINEFIXED}}</td>
+                </tr>
+                <tr>
+                  <td>Formation</td>
+                  <td>{{ data.record.FORMATION }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- The model's prediction -->
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          <h3 class="panel-title">The Model's Guess</h3>
+        </div>
+        <div class="panel-body" id="prediction" align="center">
+          <h4 class="cover-heading">
+            {{ data.play_pred }}
+            (pass: {{ '{:03.2f}'.format(data.probas[1]) }},
+            rush: {{ '{:03.2f}'.format(data.probas[2]) }},
+            kick: {{ '{:03.2f}'.format(data.probas[0]) }})
+          </h4>
+        </div>
+        <div class="panel-body">
+          <p class="head">This prediction incorporates the offense and formation.
+            However, in a model without offense or formation, the probabilities
+            are: (pass: .562, rush: .437, kick: .000). This indicates that
+            most teams would have thrown the ball in this situation!
+          </p>
+        </div>
+      </div>
+
+      <!-- The video -->
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">Video</h3>
+        </div>
+        <div class="panel-body" align="center">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/U7rPIg7ZNQ8" frameborder="0" allowfullscreen></iframe>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- The actual play outcome -->
+    <div class="page-header" id="outcome">
+      <h3 class="cover-heading">Actual Play</h3>
+      <p class="lead">{{ data.record.DESCRIPTION }}</p>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="static/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="static/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -162,7 +162,7 @@ def superbowl_page():
     data['play_pred'] =  pred_dict[play_pred[0]]
 
     # pass the records to the template and render it
-    return render_template('home.html', data=data)
+    return render_template('superbowl.html', data=data)
 
 # attempt to draw a field
 @nfl.route('/field')
