@@ -214,6 +214,11 @@ def guess():
     # respond with the updated aggregate stats (the two confusion matrices as json)
     return jsonify({'model_version':model_version})
 
+# home page
+@nfl.route('/ping')
+def ping():
+    return jsonify({'model_version':model_version})
+
 '''
 ========================================================
 If this is kicked from the command-line, run the server
